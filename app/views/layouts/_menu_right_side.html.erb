@@ -1,0 +1,28 @@
+<ul class="tabbed_navigation right" id="tabs">
+  <% if current_user.role?(:admin) %>
+    <li id="administration" class="<%=("groups" == @pcd || "users" == @pcd || "resque_server" == @pcd) ? @cur : ''%>">
+      <a class="cursor">Administration</a>
+      <ul>
+        <% if current_user.role? :admin %>
+          <li id="groups">
+            <%= link_to 'Groups', groups_path %>
+          </li>
+          <li id="users">
+            <%= link_to 'Users', users_path %>
+          </li>
+          <li id="rules">
+            <%= link_to 'Rules', rules_locations_path %>
+          </li>
+        <% end %>
+        <% if current_user.role?(:admin) %>
+          <li id="users">
+            <%= link_to 'Background jobs', resque_server_path, target: "_blank" %>
+          </li>
+        <% end %>
+      </ul>
+    </li>
+  <% end %>
+  <li id="logout">
+    <%= link_to image_tag('/assets/logout-icon.png') + 'Logout', logout_path, 'data-method'=>"get" %>
+  </li>
+</ul>

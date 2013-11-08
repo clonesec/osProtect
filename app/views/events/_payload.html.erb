@@ -1,0 +1,11 @@
+<!-- payload: hex ascii -->
+<tr>
+  <th>Payload<br /><%=@event.payload.data_payload.length.to_s + " bytes" if @event && @event.payload %></th>
+  <td>
+    <% if @event && @event.payload %>
+      <pre><%=@event.payload.to_ascii%></pre><hr />
+    <% else %>
+      none
+    <% end %>
+  </td>
+</tr>

@@ -1,0 +1,43 @@
+#!/bin/bash
+echo "begin: giddyup START HOOK" >> ${ROOT}/hook.log
+export RAILS_ENV="production"
+# echo "RAILS_ENV=${RAILS_ENV}" >> ${ROOT}/hook.log
+source "/usr/local/rvm/scripts/rvm"
+cd $RELEASE
+
+# just in case, tell rvm to trust our .rvmrc file:
+# rvm rvmrc trust "${RELEASE}"
+# ... or ... even better, put this in /etc/rvmrc:
+# export rvm_trust_rvmrcs_flag=1
+
+# coz we are nosey about such things:
+ruby -v >> ${ROOT}/hook.log
+rvm gemset name >> ${ROOT}/hook.log
+
+# just in case you are using Passenger:
+mkdir -p tmp/
+touch tmp/restart.txt
+
+# keep PDF files created between app releases:
+mkdir -p shared
+ln -s "${ROOT}/shared/reports" "shared/reports"
+# ... or use giddyup's builtin share for symlinking:
+# . /usr/local/lib/giddyup/functions.sh
+# share shared/reports
+
+# create symlink to shared vendor/bundle so we don't repeat gem installs when not needed:
+ln -s "${ROOT}/shared/bundled_gems" "vendor/bundle"
+# bundle install to shared vendor/bundle ignoring assets+development+test groups:
+# bundle install --deployment --without assets development test
+
+# uncomment if you don't like to do this by hand:
+# bundle exec rake db:migrate
+
+# optional if you precompile locally before deployment:
+# bundle exec rake assets:precompile
+
+# "start'em up da shield", i.e. start the app server using the Upstart service created via Foreman/Procfile:
+sudo service osprotect start
+
+echo "end: giddyup start hook" >> ${ROOT}/hook.log
+echo "* * * all done (wait a few seconds then go test it out) * * *"

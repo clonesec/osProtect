@@ -1,0 +1,46 @@
+// ----------------------------------- Panel Header 
+#panel_header { 
+  @include primary-gradient;
+  @include shadow;
+  @include text-shadow(#000);
+  overflow: visible;
+  padding: 9px $horizontal-page-margin;
+  z-index: 900;
+
+  h1 { 
+    display: inline-block; 
+    color: #cdcdcd;
+    margin-right: 20px; 
+    margin-bottom: 0px;
+    font-size: 1.3em; 
+    font-weight: normal; 
+  }
+
+  a, a:link { color: #cdcdcd; }
+
+  ul#panel_tabs {
+    margin: 0; 
+    padding: 0; 
+    display: inline-block; 
+    height: 100%;
+
+    & > li { 
+      display: inline-block; 
+      margin-right: 4px; 
+      font-size: 1.0em; 
+      position: relative; 
+
+      a { 
+        text-decoration: none; 
+        padding: 6px 10px; 
+        position: relative;
+        @include rounded(10px);
+      }
+
+      &:hover > a { 
+        background: $hover-menu-item-background;
+        color: #fff;
+      }
+    }
+  }
+}

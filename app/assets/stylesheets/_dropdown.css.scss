@@ -1,0 +1,109 @@
+// ----------------------------------- Dashboard Dropdown Menu
+#ddm {
+  float: right;
+  margin: 4px 0 0 0;
+  height: 35px;
+  text-indent: 0;
+  padding: 0;
+
+  li {
+    float: left;
+    display: block;
+    height: 34px;
+    border-right: 1px solid #c8c8c8;
+    text-indent: 0;
+
+    a {
+      display: block;
+      height: 34px;
+      line-height: 34px;
+      padding: 0 20px;
+      color: #4f4f4f;
+      font-size: 12px;
+      text-decoration: none;
+
+      &:hover {
+        background: url("/assets/nav-bg.png") 0px -36px repeat-x;
+        display: block;
+        height: 34px;
+        color: #fff;
+      }
+
+      img { border: none }
+    }
+
+    ul {
+      @include opacity;
+      margin: 0px 0 0 0px;
+      padding: 0;
+      position: absolute;
+      z-index: 10;
+      width: 170px;
+      background: #FFFFFF;
+      border: 1px solid #DDDDDD;
+      border-top: 0;
+      padding-bottom: 1px;
+    }
+
+    ul li, ul li a, ul li a:hover {
+      height: 34px;
+      line-height: 34px;
+    }
+
+    ul li {
+      border: 0;
+
+      a {
+        background: #fefefe;
+        text-align: left;
+        z-index: 1;
+        display: block;
+        width: 140px;
+        display: block;
+        color: #333;
+        text-shadow: none;
+        padding-left: 10px;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: normal;
+        border-top: 1px solid #ddd;
+        height: 34px;
+
+        &:hover {
+          color: #20407A;
+          background: #EEEEEE;
+          background: url("/assets/nav-bg.png") 0px -36px repeat-x;
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  li.page-options {
+    border-right: 0;
+    height: 20px;
+    line-height: 20px;
+    padding: 0;
+
+    a.no_menu_link {
+      background: url("/assets/nav-bg.png") repeat-x;
+      border: 1px solid #c8c8c8;
+      padding: 0 0 0 5px;
+      margin: 4px 0 0 0;
+      height: 24px;
+      line-height: 22px;
+      width: 155px;
+      text-align: left;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      border-radius: 4px;
+      &:hover { color: #333; }
+    }
+    
+    img {
+      float: right;
+      display: block;
+      margin: 8px 6px 0 0px;
+    }
+  }
+}

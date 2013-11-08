@@ -1,0 +1,16 @@
+<li id="configuration" class="<%=(("users" == @pcd && !current_user.role?(:admin)) || "sensors" == @pcd || "notifications" == @pcd) ? @cur : ''%>">
+  <a class="cursor">Configuration</a>
+  <ul>
+    <li id="profile">
+      <%= link_to 'My Profile', edit_user_path(current_user), 'data-method'=>"get" %>
+    </li>
+    <li id="sensors">
+      <%= link_to 'Detection Engines', sensors_path %>
+    </li>
+    <% if APP_CONFIG[:can_do_notifications] %>
+      <li id="notifications">
+        <%= link_to 'Email Notification', notifications_path %>
+      </li>
+    <% end %>
+  </ul>
+</li>

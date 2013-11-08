@@ -1,0 +1,169 @@
+<div id="wrapper">
+  <div id="content_wrapper">
+    <div class="flashes">
+      <% flash.each do |name, msg| %>
+        <%= content_tag :div, msg, :class=>"flash flash_#{name}" %>
+      <% end %>
+    </div>
+    <div id="osprotect_content" class="with_sidebar">
+      <div id="main_content_wrapper">
+        <div id="main_content">
+          <div id="report">
+            <%= form_for(@report) do |f| %>
+              <% if @report.errors.any? %>
+                <div class="error_messages">
+                  <p class="status error"><%= pluralize(@report.errors.count, "error") %> prohibited this Report from being saved:</p>
+                  <ul class="errors">
+                    <% @report.errors.full_messages.each do |msg| %>
+                        <li class="status error">&nbsp;&nbsp;&nbsp;<%= msg %></li>
+                    <% end %>
+                  </ul>
+                </div>
+              <% end %>
+              <fieldset class="inputs">
+                <ol>
+                  <li class="name required">
+                    <label>Name</label>
+                    <%= f.text_field :name %>
+                  </li>
+                  <li class="run_status">
+                    <label>Run Status</label>
+                    <%= f.select(:run_status, options_for_select([["enabled", true], ["disabled", false]], selected: @report.run_status)) %>
+                  </li>
+                  <li class="auto_run">
+                    <label>Run Automatically</label>
+                    <%= f.select(:auto_run_at, Report.auto_run_selections.collect {|p| [p.name, p.id]}, include_blank: true, selected: @report.auto_run_at) %>
+                  </li>
+                  <li>
+                    <label>Access Allowed</label>
+                    <span id="allow_all" style="display:none;">All<br /><br /></span>
+                  </li>
+                  <fieldset id="set_access_allowed" class="inputs" style="margin-top:-12px; margin-left:140px">
+                    <ol>
+                      <li class="access_allowed" style="margin-top:-10px">
+                        <label>To</label>
+                        <% if @report.group_ids_as_array.any? %>
+                            <%= f.select(:accessible_by, Report.access_allowed_selections(current_user).collect {|p| [p.name, p.id]}, include_blank: true, selected: 'g') %>
+                        <% elsif @report.for_all_users %>
+                            <%= f.select(:accessible_by, Report.access_allowed_selections(current_user).collect {|p| [p.name, p.id]}, include_blank: true, selected: 'a') %>
+                        <% else %>
+                            <%= f.select(:accessible_by, Report.access_allowed_selections(current_user).collect {|p| [p.name, p.id]}, include_blank: true, selected: 'm') %>
+                        <% end %>
+                      </li>
+                      <li class="check_boxes groups" style="margin-top:-10px">
+                        <label>Groups</label>
+                        <%= hidden_field_tag "report[group_ids][]", nil %>
+                        <span>&nbsp;</span>
+                        <fieldset style="margin:-15px 0 0 100px">
+                          <ol>
+                            <li>As the group(s) selected determine which sensor(s) are available, the sensor criteria is not necessary.</li>
+                            <% if current_user.role?(:admin)
+                                groups = Group.all
+                               else
+                                 groups = current_user.groups
+                               end
+                            %>
+                            <% groups.each do |group| %>
+                              <li>
+                                <%= check_box_tag "report[group_ids][]", group.id, @report.group_ids_as_array.include?(group.id), id: dom_id(group) %>
+                                <%= group.name %>
+                              </li>
+                            <% end %>
+                          </ol>
+                        </fieldset>
+                      </li>
+                    </ol>
+                  </fieldset>
+                  <li class="include_summary">
+                    <label>Include Summary</label>
+                    <%= f.select(:include_summary, options_for_select([["yes", true], ["no", false]], selected: @report.include_summary)) %>
+                  </li>
+                  <li class="include_events">
+                    <label>Include Events</label>
+                    <%= f.select(:include_events, options_for_select([["yes", true], ["no", false]], selected: @report.include_events)) %>
+                  </li>
+                  <li class="introduction">
+                    <label>Introduction</label>
+                    <%= f.text_area :introduction, :rows => 5, :cols => 50 %>
+                  </li>
+                  <li style="margin-top:-12px">
+                    <label>Match Criteria</label>
+                  </li>
+                  <fieldset class="inputs" style="margin-top:-12px; margin-left:140px">
+                    <ol>
+                      <li class="date_ranges_description date_ranges">
+                        <label>Date Ranges</label>
+                        please enter either a Relative or Fixed date range but not both:
+                      </li>
+                      <li class="relative_date_range date_ranges" style="margin-top:-10px">
+                        <label>Relative</label>
+                        <%= collection_select('q', :relative_date_range, Report.relative_date_ranges, :id, :name, include_blank: true, selected: @report.report_criteria[:relative_date_range]) %>
+                      </li>
+                      <li class="date_ranges">
+                        <label>Fixed</label>
+                      </li>
+                      <fieldset class="inputs date_ranges" style="margin-top:-12px; margin-left:110px">
+                        <ol>
+                          <li class="fixed_begin_date" style="margin-top:-10px">
+                            <label>Begin Date</label>
+                            <%= text_field_tag 'q[timestamp_gte]', @event_search.timestamp_gte, size: "12", maxlength: "10", class: "datepicker" %>
+                          </li>
+                          <li class="fixed_end_date" style="margin-top:-10px">
+                            <label>End Date</label>
+                            <%= text_field_tag 'q[timestamp_lte]', @event_search.timestamp_lte, size: "12", maxlength: "10", class: "datepicker" %>
+                          </li>
+                        </ol>
+                      </fieldset>
+                      <li class="source_address">
+                        <label>Source IP Address</label>
+                        <%= text_field_tag 'q[source_address]', @event_search.source_address, size: "30" %>
+                      </li>
+                      <li class="source_port">
+                        <label>Source Port</label>
+                        <%= text_field_tag 'q[source_port]', @event_search.source_port, size: "30" %>
+                      </li>
+                      <li class="destination_address">
+                        <label>Destination IP Address</label>
+                        <%= text_field_tag 'q[destination_address]', @event_search.destination_address, size: "30" %>
+                      </li>
+                      <li class="destination_port">
+                        <label>Destination Port</label>
+                        <%= text_field_tag 'q[destination_port]', @event_search.destination_port, size: "30" %>
+                      </li>
+                      <li class="priority" style="margin-top:-10px">
+                        <label>Priority</label>
+                        <%= collection_select('q', :sig_priority, SignatureDetail.priorities(current_user), :sig_priority, :sig_priority, include_blank: true, selected: @event_search.sig_priority) %>
+                      </li>
+                      <li class="sensor">
+                        <label>Sensor</label>
+                        <%= collection_select('q', :sensor_id, Sensor.selections(current_user), :id, :hostname, include_blank: true, selected: @event_search.sensor_id) %>
+                      </li>
+                      <li class="signature">
+                        <label>Signature</label>
+                        <%= collection_select('q', :sig_id, SignatureDetail.selections(current_user), :id, :sig_name, include_blank: true, selected: @event_search.sig_id) %>
+                      </li>
+                    </ol>
+                  </fieldset>
+                  <div class="clear"></div>
+                  <li class="buttons commit" style="margin-top:-15px">
+                    <label>&nbsp;</label>
+                    <%= f.submit %>
+                  </li>
+                </ol>
+              </fieldset>
+            <% end %>
+          </div> <!-- incident -->
+        </div> <!-- main_content -->
+      </div> <!-- main_content_wrapper -->
+
+      <div id="sidebar">
+        <div class="sidebar_section panel">
+          <h3 style="margin-top:-2px">&larr; <%= @report.new_record? ? "new Events Report" : "Events Report: #{@report.id}" %></h3>
+          <div class="panel_contents">
+          </div> <!-- panel_contents -->
+        </div> <!-- sidebar_section -->
+      </div> <!-- sidebar -->
+
+    </div> <!-- osprotect_content -->
+  </div> <!-- content_wrapper -->
+</div> <!-- wrapper -->

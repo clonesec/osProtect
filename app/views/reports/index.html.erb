@@ -1,0 +1,85 @@
+<% @title = 'Reports' %>
+<div class="flashes">
+  <% flash.each do |name, msg| %>
+    <%= content_tag :div, msg, :class=>"flash flash_#{name}" %>
+  <% end %>
+</div>
+<div id="osprotect_content" class="without_sidebar">
+  <div id="main_content_wrapper">
+    <div id="main_content">
+      <div class="paginated_collection">
+        <%= form_tag new_report_path, method: :get do %>
+          <div class="buttons" id="add_new_report">
+            <%= submit_tag 'New Events Report' %>
+            <%= submit_tag 'New Incidents Report' %>
+          </div>
+        <% end %>
+        <div class="pagination_information"><%= page_entries_info @reports %></div>
+        <div class="paginated_collection_contents">
+          <div class="index_content">
+            <div class="index_as_table">
+              <table border="0" cellspacing="0" cellpadding="0" id="events" class="index_table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>PDFs Created</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% unless @reports.blank? %>
+                      <% @reports.each do |report| %>
+                          <tr class="<%= cycle('even', 'odd') %>">
+                            <td>
+                              <% if current_user.id == report.user_id %>
+                                  <%= link_to report.name, edit_report_path(report), style: "text-decoration:none" %>
+                              <% else %>
+                                  <%= report.name %>
+                              <% end %>
+                            </td>
+                            <td>
+                              <% report_count = report.users_pdf_count_for_this_report(current_user.id, current_user.role?(:admin)) %>
+                              <% if report.is_auto_run? && (report_count <= 0) %>
+                                  <em>auto-run reports are emailed, then available on the PDFs page</em>
+                              <% elsif report_count > 0 %>
+                                  <%= link_to "#{report_count}", pdfs_path(id: report.id), style: "text-decoration:none" %>
+                              <% else %>
+                                  none
+                              <% end %>
+                            </td>
+                            <td>
+                              <%# note: only allow HTML/PDF display if report is enabled and not an auto-run(cron) report %>
+                              <% if report.auto_run_at.present? %>
+                                  <%= report.auto_run_at_to_s %> <em>emailed report</em>
+                              <% elsif report.enabled && report.auto_run_at.blank? %>
+                                  <%= link_to 'HTML', report_listing_events_path(id: report.id, q: report.report_criteria) %>
+                                  &nbsp;&nbsp;&nbsp;
+                                  <%= link_to 'PDF', reports_pdf_path(id: report.id, format: :pdf) %>
+                              <% else %>
+                                  <em>disabled</em>
+                              <% end %>
+                              <%# note: owner or an admin may delete this report %>
+                              <% if current_user.id == report.user_id || current_user.role?(:admin) %>
+                                  &nbsp;&nbsp;&nbsp;
+                                  <%= link_to 'delete', report, data: {confirm: "\n*** WARNING ***\n\nThis will also delete all PDF's created by this report.\n\nAre you sure?\n\n"}, method: :delete %>
+                              <% else %>
+                                  &nbsp;
+                              <% end %>
+                            </td>
+                          </tr>
+                      <% end %>
+                  <% else %>
+                    <tr><td colspan="6"><h3>No reports found!</h3></td></tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div> <!-- index_as_table -->
+          </div> <!-- index_content -->
+        </div> <!-- paginated_collection_contents -->
+        <div id="index_footer">
+          <%= will_paginate @reports %>
+        </div> <!-- index_footer -->
+      </div> <!-- paginated_collection -->
+    </div> <!-- main_content -->
+  </div> <!-- main_content_wrapper -->
+</div> <!-- osprotect_content -->

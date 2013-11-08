@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>osProtect: <%= @report_title %></title>
+</head>
+<body>
+  <h2><%= @report_title %> for <%= @user.username %>:</h2>
+  <blockquote>
+    <p>
+      <strong><%= pluralize(@events.count, 'event') %></strong> were found matching the report criteria.
+    </p>
+    <% if @events.count > 0 %>
+        <p>View the attached PDF for details.</p>
+    <% end %>
+  </blockquote>
+</body>
+</html>

@@ -1,0 +1,7 @@
+@mixin opacity { 
+  opacity: 0.9;
+  filter: alpha(opacity=90);
+  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+  -moz-opacity: 0.90;
+  -khtml-opacity: 0.9;
+}

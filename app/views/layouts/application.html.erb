@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>osProtect</title>
+  <%= stylesheet_link_tag "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body class="index osprotect_dashboard logged_in">
+<div id="container">
+  <%= render partial: 'layouts/header_navigation' %>
+  <div id="container_content">
+    <div class="main_header">
+      <h3>
+        <%= raw @title %>
+	      <%= render partial: 'dashboard/dash_header' if @title == "Dashboard" %>
+      </h3>
+    </div>
+		<%= yield %>
+    <div class="clear"></div>
+  </div>
+  <div id="footer">
+    <p>
+      <!-- <%#= Time.now.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") %>&nbsp; -->
+	    <%= "#{Time.now.utc.strftime("%A, %b %-d, %Y %H:%M:%S %Z")}" %>&nbsp;
+      <% if APP_CONFIG[:show_versions_and_limits] %>
+          osProtect: <%= APP_CONFIG[:version] %>
+          &nbsp;|&nbsp; Ruby: <%= RUBY_VERSION %>
+          &nbsp;|&nbsp; Rails: <%= Rails::VERSION::STRING %>
+					&nbsp;|&nbsp; jQuery: <%= Jquery::Rails::JQUERY_VERSION %>
+          <% if APP_CONFIG[:max_events_per_pdf] %>
+              &nbsp;|&nbsp; <%= number_with_delimiter(APP_CONFIG[:max_events_per_pdf]) %> records max per PDF
+          <% end %>
+          <% if APP_CONFIG[:per_page] %>
+              &nbsp;|&nbsp; <%= number_with_delimiter(APP_CONFIG[:per_page]) %> items per page
+          <% end %>
+      <% end %>
+    </p>
+  </div>
+</div>
+<%# Nov 2013: this doesn't work in Rails 4: %>
+<!-- <div id="ui-datepicker-div" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all ui-helper-hidden-accessible"></div> -->
+</body>
+</html>

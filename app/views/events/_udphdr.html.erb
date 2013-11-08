@@ -1,0 +1,20 @@
+<!-- udp header: src port, dst port, len, csum -->
+<tr>
+  <th>UDP header</th>
+  <td>
+      <table border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td>source port</td>
+          <td>destination port</td>
+          <td>len</td>
+          <td>csum</td>
+        </tr>
+        <tr>
+          <td><%=@event.udphdr.udp_sport%></td>
+          <td><%=@event.udphdr.udp_dport%></td>
+          <td><%=@event.udphdr.udp_len%></td>
+          <td><%=@event.udphdr.udp_csum%></td>
+        </tr>
+      </table>
+  </td>
+</tr>

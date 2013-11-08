@@ -1,0 +1,19 @@
+<div id="header">
+  <div class="header_banner">
+    <%= link_to image_tag("Clone_Systems_Managed_Security.jpeg", :alt => "Clone Systems Website", :class => 'Blogo'), "http://www.clone-systems.com", target: "_blank" %>
+  </div>
+  <div class="app_name"></div>
+  <div class="clear"></div>
+  <div class="header_menu">
+    <% @pcd = params[:controller].downcase %>
+    <% @cur = "current" %>
+    <ul class="tabbed_navigation" id="tabs">
+      <%= render partial: 'layouts/menu_pulse' %>
+      <%= render partial: 'layouts/menu_events' %>
+      <%= render partial: 'layouts/menu_incidents' %>
+      <%= render partial: 'layouts/menu_reports' if APP_CONFIG[:can_do_reports] %>
+      <%= render partial: 'layouts/menu_configuration' %>
+    </ul>
+    <%= render partial: 'layouts/menu_right_side' %>
+  </div>
+</div>

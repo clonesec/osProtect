@@ -1,0 +1,257 @@
+<%
+  chart_size = '650x300'
+  total = 0
+  data = []
+  labels = []
+
+  @priorities.collect do |priority|
+    total += priority.priority_cnt
+    data << priority.priority_cnt
+  end
+
+  labels = @priorities.collect do |priority|
+    "priority #{priority.sig_priority}"
+  end
+%>
+
+<div id="box-holders">
+  <% @priorities.each do |priority| %>
+    <%
+      case priority.sig_priority
+        when 1
+          @priority1_cnt = priority.priority_cnt
+          @priority1_link = events_path('q[sig_priority]' => priority.sig_priority)
+        when 2
+          @priority2_cnt = priority.priority_cnt
+          @priority2_link = events_path('q[sig_priority]' => priority.sig_priority)
+        else
+          @priority3_cnt = priority.priority_cnt
+          @priority3_link = events_path('q[sig_priority]' => priority.sig_priority)
+      end
+    %>
+  <% end %>
+
+  <%
+    if @priority1_cnt.blank?
+      @priority1_cnt = '0'
+    end
+    if @priority2_cnt.blank?
+      @priority2_cnt = '0'
+    end
+    if @priority3_cnt.blank?
+      @priority3_cnt = '0'
+    end
+  %>
+<div class="clear"></div>
+  <div class="priority-box first_chart">
+    <div class="count"><%= link_to number_with_delimiter(@priority1_cnt), @priority1_link, :class => "rd" %></div>
+    <div class="title"><span>High</span><br /><span class="all-scanned-title">Priority</span></div>
+  </div>
+  <div class="priority-box chart">
+    <div class="count"><%= link_to number_with_delimiter(@priority2_cnt), @priority2_link, :class => "oj" %></div>
+    <div class="title"><span>Medium</span><br /><span class="all-scanned-title">Priority</span></div>
+  </div>
+  <div class="priority-box chart">
+    <div class="count"><%= link_to number_with_delimiter(@priority3_cnt), @priority3_link, :class => "yw" %></div>
+    <div class="title"><span>Low</span><br /><span class="all-scanned-title">Priority</span></div>
+  </div>
+</div>
+
+<div class="clear"></div>
+<ul class="tabs">
+  <li id="topAttackers" class="current"><a class="tab" href="#">Top Attackers</a></li>
+  <li id="topTargets"><a class="tab" href="#">Top Targets</a></li>
+  <li id="topEvents"><a class="tab" href="#">Top Events</a></li>
+</ul>
+<div id="top_attackers" class="panel_chart">
+<h3 style="clear: both; text-align:center; font-size:15px">Top Attackers</h3>
+<% if @attackers.blank? %>
+    <h6>none</h6>
+<% else
+    @attackers = @attackers.order('ipcnt DESC')
+    total = 0
+    data = []
+    labels = []
+    @attackers.collect do |attack_ip|
+      total += attack_ip.ipcnt
+      data << attack_ip.ipcnt
+    end
+    labels = @attackers.collect do |attack_ip|
+      "#{attack_ip.ip_source}"
+    end
+    %>
+    <div class="pulse_chart_data_wrapper">
+      <div class="pulse_chart">
+        <%= image_tag(Gchart.pie_3d(data: data, labels: labels, size: chart_size, title: "", theme: :thirty7signals)) %>
+      </div>
+      <div class="pulse_data">
+        <table border="0" cellspacing="0" cellpadding="0">
+          <thead>
+            <tr>
+              <th class="count"><small>count</small></th>
+              <th class="top">Top Attackers<br /><small>(source IPs)</small></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% reset_cycle %>
+            <% @attackers.each do |attack_ip| %>
+                <tr class="<%= cycle('even', 'odd') %>">
+                  <td class="right"><%= number_with_delimiter(attack_ip.ipcnt) %></td>
+                  <td>
+										<%= link_to attack_ip.ip_source, events_path('q[source_address]' => attack_ip.ip_source, 'q[relative_date_range]' => params[:range]) %>
+									</td>
+                </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+<% end %>
+<hr style="clear: both; margin-bottom:20px; height:5px" />
+</div>
+
+<div id="top_targets" class="panel_chart">
+<h3 style="clear: both; text-align:center; font-size:15px">Top Targets</h3>
+<% if @targets.blank? %>
+    <h6>none</h6>
+<% else 
+    @targets = @targets.order('ipcnt DESC')
+    total = 0
+    data = []
+    labels = []
+    @targets.collect do |target_ip|
+      total += target_ip.ipcnt
+      data << target_ip.ipcnt
+    end
+    labels = @targets.collect do |target_ip|
+      "#{target_ip.ip_destination}"
+    end
+    %>
+    <div class="pulse_chart_data_wrapper">
+      <div class="pulse_chart">
+        <%= image_tag(Gchart.pie_3d(data: data, labels: labels, size: chart_size, title: "", theme: :thirty7signals)) %>
+      </div>
+      <div class="pulse_data">
+        <table border="0" cellspacing="0" cellpadding="0">
+          <thead>
+            <tr>
+              <th class="count"><small>count</small></th>
+              <th class="top">Top Targets<br /><small>(destination IPs)</small></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% reset_cycle %>
+            <% @targets.each do |target_ip| %>
+                <tr class="<%= cycle('even', 'odd') %>">
+                  <td class="right"><%= number_with_delimiter(target_ip.ipcnt) %></td>
+                  <td>
+										<%= link_to target_ip.ip_destination, events_path('q[destination_address]' => target_ip.ip_destination, 'q[relative_date_range]' => params[:range]) %>
+									</td>
+                </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+<% end %>
+<hr style="clear: both; margin-bottom:20px; height:5px" />
+</div>
+
+<div id="top_events" class="panel_chart">
+<h3 style="clear: both; text-align:center; font-size:15px">Top Events by Signature</h3>
+<% if @events_by_signature.blank? %>
+    <h6>none</h6>
+<% else 
+    # @events_by_signature = @events_by_signature.order('event_cnt DESC')
+    # total = 0
+    # data = []
+    # labels = []
+    # @events_by_signature.collect do |event|
+    #   total += event.event_cnt
+    #   data << event.event_cnt
+    # end
+    # labels = @events_by_signature.collect do |event|
+    #   "#{truncate(event.sig_name, length: 40)}"
+    # end
+    %>
+    <div class="pulse_chart_data_wrapper">
+      <%# NOTE: there are strange characters in the signature names which
+                causes errors for gcharts, so we don't display a chart: %>
+      <!-- <div class="pulse_chart">
+        <%#= image_tag(Gchart.pie_3d(data: data, labels: labels, size: chart_size, title: "", theme: :thirty7signals)) %>
+      </div> -->
+      <div>
+        <table border="0" cellspacing="0" cellpadding="0">
+          <thead>
+            <tr>
+              <th class="count"><small>count</small></th>
+              <th class="top">Top Events by Signature</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% reset_cycle %>
+            <% @events_by_signature.each do |event| %>
+                <tr class="<%= cycle('even', 'odd') %>">
+                  <td class="right"><%= number_with_delimiter(event.event_cnt) %></td>
+                  <td>
+										<%= link_to event.sig_name, events_path('q[sig_id]' => event.sig_id, 'q[relative_date_range]' => params[:range]) %>
+									</td>
+                </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+<% end %>
+<hr style="clear: both; margin-bottom:20px; height:5px" />
+</div>
+
+<div class="panel_chart">
+<%# note: the sql used to find the most active times is too slow, so this is disabled: %>
+<!-- <h3 style="clear: both; text-align:center; font-size:15px">Most Active Times</h3>
+<%# if @hot_times.blank? %>
+    <h6>none</h6>
+<%# else 
+    total = 0
+    data = []
+    labels = []
+    @hot_times.collect do |hot_time|
+      total += hot_time.cnt
+      data << hot_time.cnt
+    end
+    labels = @hot_times.collect do |hot_time|
+      s = hot_time.minute
+      e = hot_time.minute + 15.minutes
+      "#{s.strftime("%l:%M")}-#{e.strftime("%l:%M %P")}"
+    end
+    %>
+    <table border="0" cellspacing="0" cellpadding="0">
+      <thead>
+        <tr>
+          <th style="text-align:right"><small>count</small></th>
+          <th style="text-align:left">Most Active Times (UTC)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td></td><td style="text-align:left"><small><em>15 minute intervals with more than 10 events</em></small></td></tr>
+        <%# reset_cycle %>
+        <%# @hot_times.each do |hot_time| %>
+            <tr class="<%#= cycle('even', 'odd') %>">
+              <%#
+                s = hot_time.minute
+                e = hot_time.minute + 15.minutes
+                case hot_time.cnt
+                  when 0..50; c = "black"; w = "normal"
+                  when 51..99; c = "orange"; w = "normal"
+                  else; c = "red"; w = "bold"
+                end                                
+              %>
+              <td width="10%" class="right" style="color:<%#=c%>; font-weight:<%#=w%>"><%#= number_with_delimiter(hot_time.cnt) %></td>
+              <td width="50%" style="color:<%#=c%>; font-weight:<%#=w%>"><%#= s.strftime("%l:%M") %> - <%#= e.strftime("%l:%M %P") %> </td>
+            </tr>
+        <%# end %>
+      </tbody>
+    </table>
+<%# end %>
+<hr style="clear: both; margin-bottom:30px; height:5px" /> -->
+</div>

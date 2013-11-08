@@ -1,0 +1,63 @@
+<% @title = 'Incidents' %>
+<div class="flashes">
+  <% flash.each do |name, msg| %>
+    <%= content_tag :div, msg, :class=>"flash flash_#{name}" %>
+  <% end %>
+</div>
+<div id="osprotect_content" class="without_sidebar">
+  <div id="main_content_wrapper">
+    <div id="main_content">
+      <div class="paginated_collection">
+        <%= form_tag new_incident_path, method: :get do %>
+          <div class="buttons" id="add_new_incident">
+            <%= submit_tag 'New Incident' %>
+          </div>
+        <% end %>
+        <div class="pagination_information"><%= page_entries_info @incidents %></div>
+        <div class="paginated_collection_contents">
+          <div class="index_content">
+            <% unless @incidents.any? %>
+            	<h3>No incidents found!</h3>
+            <% else %>
+	            <div class="index_as_table">
+								<%= form_tag destroy_multiple_incidents_path, method: :delete do %>
+		              <table border="0" cellspacing="0" cellpadding="0" id="events" class="index_table">
+		                <thead>
+		                  <tr>
+		                    <th style="width:5%; padding-top:1px; padding-bottom:10px">
+								          <div class="buttons" id="delete_selected_incidents">
+								            <%= submit_tag 'Delete selected' %>
+								          </div>
+		                    </th>
+		                    <th>Name</th>
+		                    <th>Status</th>
+		                    <th>Description</th>
+		                    <th>Resolution</th>
+		                    <th>Events</th>
+		                    <!-- <th></th> -->
+		                  </tr>
+		                </thead>
+		                <tbody>
+		                  <% @incidents.each do |incident| %>
+		                    <tr class="<%= cycle('even', 'odd') %>">
+												<td><%= check_box_tag "incident_ids[]", incident.id %></td>
+		                      <td><%= link_to incident.incident_name.truncate(50, :omission => "..."), edit_incident_path(incident) %></td>
+		                      <td><%= incident.status %></td>
+		                      <td><%= simple_format incident.incident_description %></td>
+		                      <td><%= simple_format incident.incident_resolution %></td>
+		                      <td><%= incident.incident_events.count %></td>
+		                      <!-- <td><%#= link_to 'delete', incident, data: {confirm: 'Are you sure?'}, method: :delete %></td> -->
+		                    </tr>
+		                  <% end %>
+	                	</tbody>
+		              </table>
+					      <% end %>
+	            </div> <!-- index_as_table -->
+            <% end %>
+          </div> <!-- index_content -->
+        </div> <!-- paginated_collection_contents -->
+        <div id="index_footer"><%= will_paginate @incidents %></div> <!-- index_footer -->
+      </div> <!-- paginated_collection -->
+    </div> <!-- main_content -->
+  </div> <!-- main_content_wrapper -->
+</div> <!-- osprotect_content -->

@@ -1,0 +1,12 @@
+<div class="flashes">
+  <% flash.each do |name, msg| %>
+    <%= content_tag :div, msg, :class=>"flash flash_#{name}" %>
+  <% end %>
+</div>
+<div id="osprotect_content" class="without_sidebar">
+  <div id="main_content_wrapper">
+    <div id="main_content">
+      <h2>We apologize for any inconvenience, but you need to contact an admin to have your account set up properly.</h2>
+    </div> <!-- main_content -->
+  </div> <!-- main_content_wrapper -->
+</div> <!-- osprotect_content -->

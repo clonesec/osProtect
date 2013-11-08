@@ -1,0 +1,43 @@
+// -------------------------------------- osProtect Tabs
+ul.tabs {
+  margin-top: 20px;
+  padding: 0px;
+  position: relative;
+  top: 9px;
+  left: 5px;
+
+  li {
+    list-style: none;
+    display: inline;
+
+    &.current a { background-color:#ccc; }
+
+    a {
+      @include rounded-top(7px);
+      background-color:#f6f6f6;
+      position: relative;
+      padding: 8px 15px;
+      text-decoration:none;
+      font-size:14px;
+      font-weight:bold;
+      text-transform: uppercase;
+      border: solid #bdbdbd;
+      border-width: 1px 1px 0 1px;
+      line-height: 0px;
+      color: #565656;
+
+      &:hover { background-color: #eee; }
+      &.active {
+        background: #ffffff url("/assets/tab-bg.png") repeat-x top;
+        background-color: #ffffff;
+        border-top: 0;
+        border-bottom: 1px solid #D9E1E5;
+        position: relative;
+        z-index: 100000;
+        color: #282e32;
+      }
+    }
+  }
+}
+
+#top_targets, #top_events { display: none; }

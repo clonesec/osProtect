@@ -1,0 +1,87 @@
+<% @title = "#{@count} <em>'.rules' in</em> &nbsp;#{@rules_location.rules_folder}" %>
+<div class="flashes">
+  <% flash.each do |name, msg| %>
+    <%= content_tag :div, msg, :class=>"flash flash_#{name}" %>
+  <% end %>
+</div>
+<div id="osprotect_content" class="without_sidebar">
+  <div id="main_content_wrapper">
+    <div id="main_content">
+      <div class="show_content">
+        <div class="alert" style="margin-top:-10px; padding-left:160px; padding-bottom:10px">
+          <% if @user_has_borrowed_file %>
+              You may continue to
+              <span style="font-size:15px; font-weight:bold">
+                <%= link_to 'edit', rules_path(id: @borrowed.rules_location_id, file: @borrowed.file_name), {style: "text-decoration:none", title: "list rules"} %>
+              </span>
+              the borrowed <span style="font-size:15px; font-weight:bold"><%= @borrowed.file_name %></span> file.
+              <br />
+              However, for any changes to take effect you must 
+              <span style="font-size:15px; font-weight:bold">
+                <%= link_to 'return', return_rule_file_path, {style: "text-decoration:none", title: "return rules file"} %>
+                or
+                <%= link_to 'cancel', cancel_rule_file_path, {style: "text-decoration:none", title: "cancel editing rules file"} %>
+              </span>
+              the file then have an administrator restart the detection engine.
+          <% else %>
+              Click <b>borrow</b> to edit a rules file. &nbsp;Only one file may be borrowed at a time.
+              <br />
+              When done editing please <b>return</b> the rules file so others may borrow ... like a library book.
+          <% end %>
+        </div>
+        <% if @errors.blank? %>
+            <div class="index_as_table">
+              <table border="0" cellspacing="0" cellpadding="0" id="rules_files" class="index_table">
+                <thead>
+                  <tr>
+                    <th>action</th>
+                    <th>file</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if @files.blank? %>
+                      <tr><td colspan="6"><h3>No <em>.rules</em> files found!</h3></td></tr>
+                  <% else %>
+                      <% @files.each do |file| %>
+                          <tr class="<%= cycle('even', 'odd') %>">
+                            <td width="15%">
+                              <% if @user_has_borrowed_file %>
+                                  <% if @borrowed.file_name == file %>
+                                      <%= link_to 'edit', rules_path(id: @rules_location.id, file: file), {style: "text-decoration:none", title: "list rules"} %>
+                                      <br />
+                                      <%= link_to 'return', return_rule_file_path, {style: "text-decoration:none", title: "return rules file"} %>
+                                      <br />
+                                      <%= link_to 'cancel', cancel_rule_file_path, {style: "text-decoration:none", title: "cancel editing rules file"} %>
+                                  <% else %>
+                                      &nbsp;
+                                  <% end %>
+                              <% else %>
+                                  <% borrowed_by = BorrowedRuleFile.is_borrowed_by(file) %>
+                                  <% if borrowed_by.blank? %>
+                                      <%= link_to 'borrow', rules_path(id: @rules_location.id, file: file), {style: "text-decoration:none", title: "list rules"} %>
+                                  <% else %>
+                                      borrowed by:
+                                      <br />
+                                      <%= borrowed_by %>
+                                  <% end %>
+                              <% end %>
+                            </td>
+                            <td>
+                              <%= file %>
+                            </td>
+                          </tr>
+                      <% end %>
+                  <% end %>
+                </tbody>
+              </table>
+            </div> <!-- index_as_table -->
+        <% else %>
+          <div class="alert alert-error" style="padding-top:10px; padding-left:10px">
+            <%= raw "URI: #{@uri}<br />" unless @uri.blank? %>
+            <%= raw "Errors: #{@errors}<br />" unless @errors.blank? %>
+          </div>
+        <% end %>
+      </div> <!-- show_content -->
+    </div> <!-- main_content -->
+  </div> <!-- main_content_wrapper -->
+</div> <!-- osprotect_content -->

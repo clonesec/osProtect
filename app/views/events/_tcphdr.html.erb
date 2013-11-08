@@ -1,0 +1,32 @@
+<!-- tcp header: src port, dst port, seq, ack, off, res, flags, win, csum, urp -->
+<tr>
+  <th>TCP header</th>
+  <td>
+      <table border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td>source port</td>
+          <td>destination port</td>
+          <td>seq</td>
+          <td>ack</td>
+          <td>off</td>
+          <td>res</td>
+          <td>flags</td>
+          <td>win</td>
+          <td>csum</td>
+          <td>urp</td>
+        </tr>
+        <tr>
+          <td><%=@event.tcphdr.tcp_sport%></td>
+          <td><%=@event.tcphdr.tcp_dport%></td>
+          <td><%=@event.tcphdr.tcp_seq%></td>
+          <td><%=@event.tcphdr.tcp_ack%></td>
+          <td><%=@event.tcphdr.tcp_off%></td>
+          <td><%=@event.tcphdr.tcp_res%></td>
+          <td><%=@event.tcphdr.tcp_flags%></td>
+          <td><%=@event.tcphdr.tcp_win%></td>
+          <td><%=@event.tcphdr.tcp_csum%></td>
+          <td><%=@event.tcphdr.tcp_urp%></td>
+        </tr>
+      </table>
+  </td>
+</tr>

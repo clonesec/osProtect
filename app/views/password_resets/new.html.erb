@@ -1,0 +1,24 @@
+<div class="login_flash flashes">
+  <% flash.each do |name, msg| %>
+    <%= content_tag :div, msg, :class=>"flash flash_#{name}" %>
+  <% end %>
+</div>
+
+<%= form_tag password_resets_path, :method => :post, :class => "user_new" do %>
+  <div class="login_label">Reset Password</div>
+  <div class="label_field">
+    <%= label_tag :email, nil, :class=>"label_name" %>
+    <%= text_field_tag :email, params[:email] %>
+  </div>
+  <p><input class="create" name="commit" type="submit" value="Reset Password"></p>
+  <div class="spacer_login"></div>
+  <div class="login_footer">
+    <small class="left">
+      <%= Time.now.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") %>
+      &nbsp;&nbsp;
+    </small>
+    <small class="right">
+      <a href="http://www.clone-systems.com">www.clone-systems.com</a>
+    </small>
+  </div>
+<% end %>

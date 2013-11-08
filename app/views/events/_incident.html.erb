@@ -1,0 +1,16 @@
+<% if incident.blank? %>
+  <div class="incident">
+    No events were selected!
+  </div>
+<% else %>
+  <div id="<%=dom_id(incident)%>" class="incident">
+    <strong><%= incident.events_added_count %></strong> <small><em>events added to incident</em></small> 
+    <strong><%= link_to incident.incident_name, edit_incident_path(id: incident.id) %></strong>
+    <% if incident.events_rejected_count > 0 %>
+        &nbsp;&nbsp;<small><em>(<%=incident.events_rejected_count%> rejected duplicates)</em></small> 
+    <% end %>
+    <!-- <small><em>created on <%#= incident.created_at.strftime('%b %d, %Y at %I:%M %p') unless incident.created_at.blank? %></em></small> -->
+    <%#= link_to "Remove", incident, :method => :delete, :remote => true %>
+    <%#= simple_format incident.incident_description %>
+  </div>
+<% end %>

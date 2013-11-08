@@ -1,0 +1,22 @@
+<!-- icmp header: type, code, csum, id, seq -->
+<tr>
+  <th>ICMP header</th>
+  <td>
+      <table border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td>type</td>
+          <td>code</td>
+          <td>csum</td>
+          <td>id</td>
+          <td>seq</td>
+        </tr>
+        <tr>
+          <td><%=@event.icmphdr.icmp_type%></td>
+          <td><%=@event.icmphdr.icmp_code%></td>
+          <td><%=@event.icmphdr.icmp_csum%></td>
+          <td><%=@event.icmphdr.icmp_id%></td>
+          <td><%=@event.icmphdr.icmp_seq%></td>
+        </tr>
+      </table>
+  </td>
+</tr>

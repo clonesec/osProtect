@@ -1,0 +1,19 @@
+<%# note: if PDFs are a submenu of Reports uncomment this: %>
+<!-- <li id="reports" class="<%#=['reports', 'pdfs'].include?(@pcd) ? @cur : ''%>"> -->
+<%# note: if PDFs are a submenu of Reports remove/comment this: %>
+<li id="reports" class="<%=("reports" == @pcd || "pdfs" == @pcd) ? @cur : ''%>">
+  <a class="cursor">Reports</a>
+  <ul>
+    <li id="reports" class="current">
+      <%= link_to 'Report Profiles', reports_path %>
+    </li>
+    <li id="reports" class="current">
+      <%= link_to 'Saved PDF Reports', pdfs_path(type: 'report') %>
+    </li> 
+    <% if APP_CONFIG[:can_do_notifications] %>
+      <li id="notifications">
+        <%= link_to "Notification PDF's", pdfs_path(type: 'notification') %>
+      </li>
+    <% end %>
+  </ul>
+</li>

@@ -1,0 +1,690 @@
+// Partials
+@import "typography";
+@import "header";
+@import "panel_header";
+@import "forms";
+@import "dropdown";
+@import "tabs";
+@import "page_specific";
+@import "components/flash_messages";
+@import "components/date_picker";
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 150%;
+  font-size: 72%;
+  background: #fff;
+  margin: 0;
+  padding: 0;
+  color: $text-color;
+}
+
+div#container {
+  margin: 0 auto;
+  width: 1000px;
+}
+
+// -------------------------------------- Page Title Bar 
+#title_bar {
+  @include section-header;
+  position: relative; 
+  margin: 0; 
+  padding: 10px $horizontal-page-margin; 
+
+  h2 { 
+    margin: 12px 0 5px 0; 
+    padding: 0; 
+    font-size: 2.6em;
+    font-weight: bold;
+  }
+
+  .action_items { 
+    position: absolute; 
+    right: $horizontal-page-margin; 
+    top: 28px;
+
+    a { 
+      @include light-button; 
+      @include icon(#777, 0.8em); 
+      @include gradient(#f9f9f9, #dddbdb);
+      padding: .8em 1.5em .7em 1.5em;
+      border: 1px solid #f8f8f8;
+      span.icon { vertical-align: bottom; margin-right: 4px;} 
+      &:hover { @include icon-color(#000); }
+      &:active { border: inherit; }
+    }
+  }
+}
+
+.main_header h3 {
+  @include rounded-all(12px,12px,0,0);
+  background: url("/assets/content-header.png") repeat-x scroll 0 0 transparent;
+  border-bottom: 1px solid #bdbdbd;
+  color: #565656;
+  height: 43px;
+  left: -15px;
+  line-height: 43px;
+  margin:0 0 20px;
+  padding: 0;
+  position: relative;
+  font-weight: bold;
+  text-indent: 21px;
+  text-shadow: 1px 1px #FFFFFF;
+  width: 998px;
+  span { font-size: 0.65em; }
+}
+
+// -------------------------------------- Main Structure 
+#container_content {
+  @include rounded-all(12px,12px,0,0);
+  border: 1px solid #bdbdbd;
+  min-height: 400px;
+  padding: 0 15px 20px;
+}
+
+#osprotect_content { 
+  margin: 0; 
+  
+  #main_content_wrapper { 
+    float: left; 
+    width: 100%; 
+
+    #main_content{ 
+      margin-right: 285px; 
+    }
+  }
+
+  &.without_sidebar #main_content_wrapper #main_content{ margin-right: 0; }
+
+  #sidebar { 
+    float: left; 
+    width: $sidebar-width; 
+    margin-left: -$sidebar-width;
+    padding-bottom: 25px;
+  }
+}
+
+// -------------------------------------- Footer 
+#footer {
+  @include rounded-all(0,0,12px,12px);
+  background: url("/assets/login/login-footer.png") repeat-x scroll 0 0 transparent;
+  border: 1px solid #c8c8c8;
+  border-top: 0;
+  margin: 0 auto 10px auto;
+  height: 40px;
+  line-height: 20px;
+  text-align: center;
+  font-size: 12px;
+  clear: both; 
+
+  p {
+    text-align: center;
+    padding-top: 10px
+  }
+
+  .left {
+    float: left;
+    width: 340px;
+    margin-left: 0px;
+  }
+
+  .center{ margin-left:20px; }
+
+  .right {
+    float: right;
+    width: 240px;
+    margin-right: 20px;
+    text-align:right;
+  }
+  
+  .right a {
+    color: #000;
+    &::hover { text-decoration: underline; }
+  }
+}
+
+// -------------------------------------- Links 
+a, a:link, a:visited {
+  color: $link-color;
+  text-decoration: underline;
+}
+a:hover { text-decoration: none; }
+
+// -------------------------------------- Buttons 
+td, p {
+  @include icon(#B3BCC1, 0.8em);
+  span.icon { margin: 0 3px; }
+}
+
+a.member_link {
+  margin-right: 7px;
+  white-space: nowrap;
+}
+
+a.button, input[type=submit] { @include dark-button; }
+
+// -------------------------------------- Breadcrumbs 
+.breadcrumb {
+  text-transform: uppercase;
+  font-size: 0.9em;
+  font-weight: normal;
+
+  a, a:link {
+    color: #8a949e ;
+    text-decoration: none;
+  }
+
+  a:hover { text-decoration: underline; }
+
+  .breadcrumb_sep {
+    margin: 0 2px;
+    color: #aab2ba;
+  }
+}
+
+// -------------------------------------- Sections & Panels
+// Helper class to apply to elements to make them sections
+.section, .panel{ @include section; }
+
+// -------------------------------------- Blank Slate
+.blank_slate_container {
+  clear: both;
+  text-align: center;
+  
+  .blank_slate {
+    @include rounded;
+    -webkit-font-smoothing: antialiased;
+    border: 1px dashed #DADADA;
+    color: #AAA;
+    display: inline-block;
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 14px 25px;
+    text-align: center;
+    
+    small {
+      display: block;
+      font-size: 0.9em;
+      font-weight: normal;
+    }
+  }
+}
+
+.osprotect_dashboard .blank_slate_container .blank_slate {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.with_sidebar .blank_slate_container .blank_slate {
+  margin-top: 80px;
+}
+
+// -------------------------------------- Tables 
+table.index_table {
+  width: 100%;
+  margin-bottom: 10px;
+  border: 1px solid #DADADA;
+
+  th { 
+    @include section-header(#aaa);
+    text-align: left;
+    padding-left: $cell-horizontal-padding;
+    padding-right: $cell-horizontal-padding;
+
+    a, a:link, a:visited {
+      color: $section-header-text-color;
+      text-decoration: none;
+      display: block;
+    }
+
+    &.sortable a {
+      background: image-url('orderable.png') no-repeat 0 4px; padding-left: 13px;
+    }
+
+    &.sorted-asc a { background-position: 0 -27px; }
+    &.sorted-desc a {  background-position: 0 -56px;}
+
+    &.sorted-asc, &.sorted-desc {
+      @include gradient(darken($secondary-gradient-start, 5%), darken($secondary-gradient-stop, 5%));
+      border-top: 1px solid $secondary-gradient-start;
+      border-bottom: 1px solid $secondary-gradient-stop;
+    }
+  }
+
+  tr.even td { background: $table-stripe-color; }
+
+  td {
+    padding: 10px $cell-horizontal-padding 8px $cell-horizontal-padding;
+    border-bottom: 1px solid #e8e8e8;
+    vertical-align: top;
+  }
+}
+
+// -------------------------------------- Tables inside Panels
+.panel_contents table {
+  margin-top: 5px;
+  th { 
+    padding-top: 10px;
+    background: none;
+    color: $primary-color;
+    @include no-shadow;
+    @include text-shadow;
+    text-transform: uppercase;
+    border-bottom: 1px solid #ccc;
+
+    &.count {
+      width: 45px;
+      text-align: right;
+    }
+
+    &.top {
+      text-align: left;
+    }
+  }
+
+  tr.even { background: darken($table-stripe-color, 3%); }
+  tr.odd { background: $table-stripe-color; }
+}
+
+// -------------------------------------- Charts inside Panels
+#box-holders {
+  .priority-box {
+    background: url("/assets/priority-box.png") no-repeat scroll 0 0 transparent;
+    float: left;
+    height: 210px;
+    width: 306px;
+
+    .count {
+      font-size: 50px;
+      font-weight: bold;
+      margin-top: 65px;
+      text-align: center;
+      text-decoration: none;
+      text-shadow: -1px 1px 1px #333333;
+
+      a {
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+    }
+    .title {
+      color: #F4F5F8;
+      font-weight: normal;
+      line-height: 15pt;
+      margin-top: 30px;
+      text-align: center;
+      text-decoration: none;
+      text-shadow: 1px 1px 1px #333333;
+      text-transform: uppercase;
+    }
+  }
+
+  .first_chart {
+    margin-left: 0;
+  }
+
+  .chart {
+    margin-left: 8px;
+  }
+}
+
+.panel_chart {
+  @include shadow;
+  background: #f4f4f4;
+}
+
+.pulse_chart {
+  float: left;
+  padding: 7px 0 10px 10px;
+}
+
+.pulse_data {
+  float: right;
+  max-width: 235px;
+  min-width: 235px;
+}
+
+// -------------------------------------- Sidebar Sections 
+.sidebar_section { @include section; }
+
+// -------------------------------------- Pagination 
+.pagination_information { 
+  float: right;
+  margin-bottom: 5px;
+  font-size: 0.95em;
+  color: #a3acb1;
+  b { color: #5c6469; }
+}
+
+.paginated_collection_contents { 
+  clear: both;
+}
+
+.pagination { 
+  font-size: 0.9; 
+  margin-left: 10px; 
+  .disabled { display: none; }
+  a { @include light-button; }
+  a, em.current { 
+    @include rounded(0px);
+    margin-right: 4px; 
+    padding: 2px 5px;
+  }
+  em.current { font-size: 15px; padding-left: 7px; }
+}
+
+// -------------------------------------- Index Footer (Under Table) 
+#index_footer {
+  padding-top: 5px;
+  text-align: right;
+  font-size: 0.85em;
+}
+
+.index_content { @include shadow(0,1px,2px,rgba(0,0,0,0.26)); clear: both; }
+
+// -------------------------------------- Index as Grid 
+table.index_grid td { border: none; background: none; padding: 0 20px 20px 0; margin: 0;}
+
+// -------------------------------------- Logged Out 
+body.logged_out {
+  background: #fff;
+
+  .login_wrapper {
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 30px;
+
+    h1 {
+      overflow: auto;
+      width: 590px;
+      margin: 0 auto;
+      display: block;
+    }
+
+    img.Llogo {
+      margin-top: 24px;
+      margin-left: 2px;
+      float: left;
+      border: 0;
+    }
+
+    .os_protect {
+      background: url("/assets/osprotect.png") no-repeat;
+      margin-top: 8px;
+      width: 140px;
+      height: 80px;
+      float: right;
+    }
+
+    .login_flash {
+      margin: 0 auto -15px auto;
+      width: 590px;
+      text-align: left;
+    }
+
+    .user_new {
+      @include rounded-all(8px);
+      width: 588px;
+      height: 287px;
+      margin: 35px auto 0 auto;
+      border: 1px solid #bdbdbd;
+      background: url("/assets/login/login-bg.jpg") 0px 45px no-repeat;
+
+      .login_label {
+        @include rounded-top(8px);
+        background: url("/assets/login/login-header.png") repeat-x;
+        margin-bottom: 40px;
+        height: 45px;
+        border-bottom: 1px solid #bdbdbd;
+        font-size: 18px;
+        font-family: arial, sans-serif;
+        text-align: left;
+        line-height: 45px;
+        text-indent: 20px;
+      }
+
+      p {
+        display: block;
+        padding: 0.5em;
+      }
+
+      .label_field {
+        margin: 10px;
+        label {
+          margin-right: 11px;
+          text-align: right;
+          font-size: 16px;
+          color: #fff;
+        }
+      }
+
+      input.user_submit {
+        @include rounded-all(4px);
+        background: url("/assets/login/button-bg.png");
+        width: 77px;
+        height: 30px;
+        color: #fff;
+        cursor: pointer;
+        &:hover { background-position: 0px 30px; box-shadow: none; }
+      }
+
+      input[type=text], input[type=email], input[type=password] {
+        width: 163px;
+      }
+
+      .pass_remind a { color: #fff; }
+
+      .login_footer {
+        @include rounded-bottom(8px);
+        background: url("/assets/login/login-footer.png") repeat-x;
+        border-top: 1px solid #bdbdbd;
+        line-height: 34px;
+        margin-top: 25px;
+        height: 34px;
+
+        .left {
+          float: left;
+          display: block;
+          margin-left: 20px;
+          font-family: arial, sans-serif;
+          font-size: 12px;
+        }
+
+        .right {
+          float: right;
+          display: block;
+          margin-right: 20px;
+          font-size: 12px;
+          font-family: arial, sans-serif;
+        }
+      }
+    }
+
+    .edit_user {
+      @include rounded-all(8px);
+      width: 588px;
+      height: 287px;
+      margin: 35px auto 0 auto;
+      border: 1px solid #bdbdbd;
+      background: url("/assets/login/login-bg.jpg") 0px 45px no-repeat;
+
+      .login_label {
+        @include rounded-top(8px);
+        background: url("/assets/login/login-header.png") repeat-x;
+        margin-bottom: 40px;
+        height: 45px;
+        border-bottom: 1px solid #bdbdbd;
+        font-size: 18px;
+        font-family: arial, sans-serif;
+        text-align: left;
+        line-height: 45px;
+        text-indent: 20px;
+      }
+
+      p {
+        display: block;
+        margin-right: -51px;
+        padding: 0.5em;
+      }
+
+      .label_field {
+        margin: 10px;
+        label {
+          margin-right: 11px;
+          text-align: left;
+          font-size: 16px;
+          color: #fff;
+        }
+      }
+
+      input.user_submit {
+        @include rounded-all(4px);
+        background: url("/assets/login/button-bg.png");
+        width: 77px;
+        height: 30px;
+        color: #fff;
+        cursor: pointer;
+        &:hover { background-position: 0px 30px; box-shadow: none; }
+      }
+
+      input[type=text], input[type=email], input[type=password] {
+        width: 163px;
+      }
+
+      .pass_remind a { color: #fff; }
+
+      .login_footer {
+        @include rounded-bottom(8px);
+        background: url("/assets/login/login-footer.png") repeat-x;
+        border-top: 1px solid #bdbdbd;
+        line-height: 34px;
+        margin-top: 25px;
+        height: 34px;
+
+        .left {
+          float: left;
+          display: block;
+          margin-left: 20px;
+          font-family: arial, sans-serif;
+          font-size: 12px;
+        }
+
+        .right {
+          float: right;
+          display: block;
+          margin-right: 20px;
+          font-size: 12px;
+          font-family: arial, sans-serif;
+        }
+      }
+    }
+
+  }
+
+  .content_wrapper{
+    width: 500px;
+    margin: 70px auto;
+    #osprotect_content {
+      @include shadow;
+      background: #fff;
+      padding: 13px 30px;
+    }
+  }
+
+  h2 {
+    @include section-header;
+    @include primary-gradient;
+    @include text-shadow(#000);
+    color: #fff;
+    margin: -13px -30px 20px -30px;
+  }
+}
+
+// -------------------------------------- Dashboard 
+table.dashboard {
+  width: 100%; 
+  td { border-bottom: none; }
+  .dashboard_section { @include section; }
+}
+
+// -------------------------------------- Resource Attributes Table 
+.attributes_table { overflow: hidden; }
+
+.attributes_table table {
+  th, td {
+    padding: 8px $cell-horizontal-padding 6px $cell-horizontal-padding;
+    vertical-align: top;
+    border-bottom: 1px solid #e8e8e8; 
+  }
+  th {
+    @include no-shadow;
+    @include no-gradient;
+    width: 150px;
+    font-size: 0.9em;
+    padding-left: 0;
+    text-transform: uppercase;
+    color: $primary-color;
+    @include text-shadow;
+  }
+  td {
+    .empty {
+      color: #bbb;
+      font-size: 0.8em;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+    }
+  }
+}
+
+.sidebar_section .attributes_table th { width: 50px; }
+
+// -------------------------------------- Status Tags
+.status {
+  background: darken($secondary-color, 15%);
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 3px 5px 2px 5px;
+  font-size: 0.8em;
+
+  &.ok, &.published, &.complete, &.completed, &.green { background: #8daa92; }
+  &.warn, &.warning, &.orange { background: #e29b20; }
+  &.error, &.errored, &.red { background: #d45f53; }
+
+
+}
+
+// -------------------------------------- Scopes
+.scopes {
+  float: left;
+  margin-bottom: 10px;
+  font-size: 1.0em;
+
+  .scope {
+    padding: 4px 8px 3px 8px;
+    margin-right: 4px;
+    a { text-decoration: none; font-weight: bold; color: #888; }
+    a:hover { text-decoration: underline; ; }
+    &.selected { 
+      @include rounded(5px);
+      @include inset-shadow(0,1px,0,#ccc);
+      @include text-shadow;
+      background: #efefef;
+      color: #666;
+      em { font-weight: bold; font-style: normal;  
+      }
+    }
+    .count{ color: #aaa; font-size: 0.9em; }
+  }
+  .scopes_seperator { display: none; }
+}
+
+// -------------------------------------- Columns
+.columns {
+  clear: both;
+  padding: 0;
+  .column { float: left; }
+}

@@ -1,0 +1,31 @@
+<!-- signature: generator id, signature id, signature revision, activity, query signature db, view rule -->
+<tr>
+  <th>Signature</th>
+  <td>
+    <% if @event && @event.signature_detail %>
+      <%=@event.signature_detail.sig_name%><hr />
+      <table border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td>priority</td>
+          <td>class id</td>
+          <td>revision id</td>
+          <td>signature id</td>
+          <td>generator id</td>
+        </tr>
+        <tr>
+          <td><%=@event.signature_detail.sig_priority%></td>
+          <td>
+            <%=@event.signature_detail.sig_class_id%>
+            <br />
+            <%=@event.signature_detail.signature_class.sig_class_name unless @event.signature_detail.signature_class.blank? %>
+          </td>
+          <td><%=@event.signature_detail.sig_rev%></td>
+          <td><%=@event.signature_detail.sig_sid%></td>
+          <td><%=@event.signature_detail.sig_gid%></td>
+        </tr>
+      </table>
+    <% else %>
+      no Signature information found!
+    <% end %>
+  </td>
+</tr>

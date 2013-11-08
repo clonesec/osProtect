@@ -1,0 +1,130 @@
+<% @title = "HTML Report: #{@report.name}" %>
+<div class="flashes">
+  <% flash.each do |name, msg| %>
+    <%= content_tag :div, msg, :class=>"flash flash_#{name}" %>
+  <% end %>
+</div>
+<div id="osprotect_content" class="with_sidebar">
+  <div id="main_content_wrapper">
+    <div id="main_content">
+        <div class="paginated_collection">
+            <div class="pagination_information"><%= page_entries_info @events %></div>
+            <div class="paginated_collection_contents">
+              <div class="index_content">
+                <div class="index_as_table">
+                  <% if @events.blank? %>
+                      <% no_events = true %>
+                      <br /><h6>No events found!</h6>
+                      <br />
+                  <% else %>
+                      <% no_events = false %>
+                      <table border="0" cellspacing="0" cellpadding="0" id="events" class="index_table">
+                        <thead>
+                          <tr>
+                            <th class="sortable">Priority</th>
+                            <th class="sortable">Signature</th>
+                            <th class="sortable">Source</th>
+                            <th class="sortable">Destination</th>
+                            <th class="sortable">Sensor</th>
+                            <th class="sortable">Timestamp</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% @events.each do |event| %>
+                              <tr class="<%= cycle('even', 'odd') %>">
+                                <td><%=event.priority%></td>
+                                <td><%= link_to event.signature, event_path(event.key) %></td>
+                                <td><%=event.source_ip_port%></td>
+                                <td><%=event.destination_ip_port%></td>
+                                <td><%=event.sensor_name%></td>
+                                <td><%=event.timestamp%></td>
+                              </tr>
+                          <% end %>
+                        </tbody>
+                      </table>
+                  <% end %>
+                </div> <!-- index_as_table -->
+              </div> <!-- index_content -->
+            </div> <!-- paginated_collection_contents -->
+
+          <div id="index_footer">
+            <%= will_paginate @events %>
+          </div>
+        </div> <!-- paginated_collection -->
+    </div> <!-- main_content -->
+  </div> <!-- main_content_wrapper -->
+
+  <div id="sidebar">
+    <div class="sidebar_section panel" id="filters_sidebar_section">
+      <h3 style="margin-top:40px">&larr; Report Criteria:</h3>
+      <div class="panel_contents events_listing">
+        <%= form_tag reports_path, method: 'get', class: "filter_form" do %>
+          <div class="error_messages">
+            <ul class="errors">
+              <% for message in @event_search.errors.full_messages %>
+                  <li class="status error"><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+          <div class="filter_form_field filter_select">
+            <%= label_tag "Priority" %>
+            <%= collection_select('q', :sig_priority, SignatureDetail.priorities(current_user), :sig_priority, :sig_priority, include_blank: true, selected: @event_search.sig_priority, disabled: 'disabled') %>
+          </div>
+          <div class="filter_form_field filter_select">
+            <%= label_tag "Signature" %>
+            <%= collection_select('q', :sig_id, SignatureDetail.selections(current_user), :id, :sig_name, include_blank: true, selected: @event_search.sig_id) %>
+          </div>
+          <div class="filter_form_field filter_string">
+            <%= label_tag "source address" %>
+            <%= text_field_tag 'q[source_address]', @event_search.source_address, size: "30" %>
+          </div>
+          <div class="filter_form_field filter_string">
+            <%= label_tag "source port" %>
+            <%= text_field_tag 'q[source_port]', @event_search.source_port, size: "30" %>
+          </div>
+          <div class="filter_form_field filter_string">
+            <%= label_tag "destination address" %>
+            <%= text_field_tag 'q[destination_address]', @event_search.destination_address, size: "30" %>
+          </div>
+          <div class="filter_form_field filter_string">
+            <%= label_tag "destination port" %>
+            <%= text_field_tag 'q[destination_port]', @event_search.destination_port, size: "30" %>
+          </div>
+          <div class="filter_form_field filter_select">
+            <%= label_tag "Sensor" %>
+            <%= collection_select('q', :sensor_id, Sensor.selections(current_user), :id, :hostname, include_blank: true, selected: @event_search.sensor_id) %>
+          </div>
+          <div class="filter_form_field filter_date_range">
+            <%= label_tag "Date Range" %>
+            <%= collection_select('q', :relative_date_range, Report.relative_date_ranges, :id, :name, include_blank: true, selected: @event_search.relative_date_range) %>
+          </div>
+          <div class="filter_form_field filter_date_range">
+            <%= label_tag "Custom Date Range" %>
+            <%= text_field_tag 'q[timestamp_gte]', @event_search.timestamp_gte, size: "12", maxlength: "10" %>
+            <span class="seperator">-</span>
+            <%= text_field_tag 'q[timestamp_lte]', @event_search.timestamp_lte, size: "12", maxlength: "10" %>
+          </div>
+        <% end %>
+      </div> <!-- panel_contents -->
+    </div> <!-- sidebar_section -->
+  </div> <!-- sidebar -->
+
+  <div class="clear"></div>
+  <div class="spacer15">&nbsp;</div>
+  <div class="dashboard_section panel">
+    <div class="panel_contents">
+      <h3 style="clear: both; text-align:center">
+        Pulse for 
+        <% if @report.report_criteria[:relative_date_range].blank? %>
+            Date Range:&nbsp;&nbsp;
+        <% else %>
+            <%= @report.report_criteria[:relative_date_range].to_s.titleize %>:&nbsp;&nbsp;
+        <% end %>
+        <%= @start_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") %>
+        &nbsp;&nbsp;-&nbsp;&nbsp;
+        <%= @end_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") %>
+      </h3>
+      <%= render partial: 'shared/pulse' %>
+    </div> <!-- panel_contents -->
+  </div> <!-- dashboard_section -->
+</div> <!-- osprotect_content -->

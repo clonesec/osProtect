@@ -1,0 +1,37 @@
+<div class="login_flash flashes">
+  <% flash.each do |name, msg| %>
+    <%= content_tag :div, msg, :class=>"flash flash_#{name}" %>
+  <% end %>
+  <% if @user.errors.any? %>
+    <div class="error_messages">
+      <ul>
+        <% for message in @user.errors.full_messages %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+</div>
+<div class="clear"></div>
+<%= form_for @user, :url => password_reset_path(params[:id]) do |f| %>
+  <div class="login_label">Reset Password</div>
+  <div class="label_field">
+    <%= label_tag 'Password' %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <%= password_field_tag 'user[password]' %>
+  </div>
+  <div class="label_field">
+    <%= label_tag 'Confirmation' %>
+    <%= password_field_tag 'user[password_confirmation]' %>
+  </div>
+  <p><input class="create" name="commit" type="submit" value="Reset Password"></p>
+  <div class="spacer_login"></div>
+  <div class="login_footer">
+    <small class="left">
+      <%= Time.now.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") %>
+      &nbsp;&nbsp;
+    </small>
+    <small class="right">
+      <a href="http://www.clone-systems.com">www.clone-systems.com</a>
+    </small>
+  </div>
+<% end %>

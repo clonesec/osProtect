@@ -1,0 +1,7 @@
+<% if params[:commit] == 'create Incidents Report' || @report.report_type == 2 %>
+  <% @title = 'New Incident Report' %>
+  <%= render 'incidents_form' %>
+<% else %>
+<% @title = 'New Event Report' %>
+  <%= render 'events_form' %>
+<% end %>

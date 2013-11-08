@@ -1,0 +1,27 @@
+<% signature = f.object %>
+<%# name_with_index = f.object_name %>
+<%# match_index = /\[(\d+)\]/.match(name_with_index) %>
+<%# fieldx = match_index.to_s.gsub("[",'').gsub("]",'').to_i + 1 %>
+<%# note: fieldset class must be "item" for awesome_nested_fields to work: %>
+<fieldset class="item" style="margin-top:-7px">
+	<hr /><br />
+  <button class="remove" style="float:right; margin-top:-12px; margin-right:25px; margin-bottom:7px; text-decoration:none" title="delete this section">
+    delete section
+  </button>
+	<ol>
+		<li class="title">
+		  <label>Title</label>
+		  <%= f.text_field :title %>
+		</li>
+		<li class="description">
+		  <label>Description</label>
+		  <%= f.text_area :description, :rows => 5, :cols => 50 %>
+		</li>
+		<li class="signature-select" style="margin-top:-15px">
+			<label>Signatures:</label>
+			<%= f.select(:signature_ids, options_for_select(SignatureDetail.get_selections(current_user), signature.signature_ids), {}, {multiple: true, class: "signatures", style: "width:78%"}) %>
+		</li>
+	</ol>
+  <%= f.hidden_field :id %>
+  <%= f.hidden_field :_destroy %>
+</fieldset>

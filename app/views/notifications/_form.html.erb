@@ -1,0 +1,117 @@
+<div id="wrapper">
+  <div id="content_wrapper">
+    <div class="flashes">
+      <% flash.each do |name, msg| %>
+        <%= content_tag :div, msg, :class=>"flash flash_#{name}" %>
+      <% end %>
+    </div>
+    <div id="osprotect_content" class="without_sidebar">
+      <div id="main_content_wrapper">
+        <div id="main_content">
+          <div id="notification">
+            <%= form_for(@notification) do |f| %>
+              <% if @notification.errors.any? %>
+                <div class="error_messages">
+                  <p class="status error"><%= pluralize(@notification.errors.count, "error") %> prohibited this Notification from being saved:</p>
+                  <ul class="errors">
+                    <% @notification.errors.full_messages.each do |msg| %>
+                        <li class="status error">&nbsp;&nbsp;&nbsp;<%= msg %></li>
+                    <% end %>
+                  </ul>
+                </div>
+              <% end %>
+              <fieldset class="inputs">
+                <ol>
+                  <li class="name required">
+                    <label>Name</label>
+                    <%= f.text_field :name %>
+                  </li>
+                  <li class="description">
+                    <label>Description</label>
+                    <%= f.text_area :description, :rows => 5, :cols => 50 %>
+                  </li>
+                  <li class="run_status">
+                    <label>Run Status</label>
+                    <%= f.select(:run_status, options_for_select([["enabled", true], ["disabled", false]], selected: @notification.run_status)) %>
+                  </li>
+
+	                <div class="clear"></div>
+                  <fieldset class="inputs" style="margin-top:-12px">
+										<hr />
+	                  <li>
+	                    <label>&nbsp;<b>Match Criteria</b></label>
+	                  </li>
+                    <ol>
+                      <li class="source_address">
+                        <label>Source IP</label>
+                        <%= text_field_tag 'q[source_address]', @event_search.source_address, size: "30" %>
+                      </li>
+                      <li class="source_port">
+                        <label>Source Port</label>
+                        <%= text_field_tag 'q[source_port]', @event_search.source_port, size: "30" %>
+                      </li>
+                      <li class="destination_address">
+                        <label>Destination IP</label>
+                        <%= text_field_tag 'q[destination_address]', @event_search.destination_address, size: "30" %>
+                      </li>
+                      <li class="destination_port">
+                        <label>Destination Port</label>
+                        <%= text_field_tag 'q[destination_port]', @event_search.destination_port, size: "30" %>
+                      </li>
+                      <li class="priority" style="margin-top:-10px">
+                        <label>Priority</label>
+                        <%= collection_select('q', :sig_priority, SignatureDetail.priorities(current_user), :sig_priority, :sig_priority, include_blank: true, selected: @event_search.sig_priority) %>
+                      </li>
+                      <li class="sensor">
+                        <label>Sensor</label>
+                        <%= collection_select('q', :sensor_id, Sensor.selections(current_user), :id, :hostname, include_blank: true, selected: @event_search.sensor_id) %>
+                      </li>
+                    </ol>
+                  </fieldset>
+									<li style="margin-top:-15px">
+									  <button class="add" style="margin-left:-7px; text-decoration:none" title="add more signature sections to match">
+									    Add a Signature Section
+									  </button>
+									</li>
+									<%# class must be "items" for awesome_nested_fields to work: %>
+									<div class="items">
+									  <%= f.nested_fields_for :notification_signature_sections do |f|
+									    render 'signature_section', f: f
+									  end -%>
+									</div>
+                  <div class="clear"></div>
+                  <li class="buttons commit" style="margin-top:-15px">
+                    <label>&nbsp;</label>
+                    <%= f.submit %>
+                  </li>
+                </ol>
+              </fieldset>
+            <% end %>
+          </div> <!-- notification -->
+        </div> <!-- main_content -->
+      </div> <!-- main_content_wrapper -->
+
+    </div> <!-- osprotect_content -->
+  </div> <!-- content_wrapper -->
+</div> <!-- wrapper -->
+<%# 
+Feb 2013
+The following javascript sets newly inserted "select" elements to use "select2" (Multi-Value Select Boxes).
+note: it assumes that we are using the "awesome_nested_fields" gem, or similar, to insert new
+			Signature Sections into the DOM, and if other elements are inserted, errors may occur: 
+%>
+<script>
+jQuery(function() {
+	document.addEventListener("DOMNodeInserted", function(event){
+		var target = event.srcElement || event.target,
+				$selection = (target && target.tagName.toLowerCase() == 'select') ? $(target) : $(target).find('select');
+		// console.log($selection);
+		if($selection) {
+			$selection.select2({
+			  placeholder: "click or type",
+			  allowClear: true
+			});
+		}
+	});
+});
+</script>

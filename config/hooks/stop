@@ -1,0 +1,29 @@
+#!/bin/bash
+echo "...................................................." >> ${ROOT}/hook.log
+date >> ${ROOT}/hook.log
+echo "begin: giddyup STOP HOOK (git'r done!)" >> ${ROOT}/hook.log
+export RAILS_ENV="production"
+source "/usr/local/rvm/scripts/rvm"
+cd $RELEASE
+
+# if you're nosey uncomment these:
+# echo "cd ${RELEASE}" >> ${ROOT}/hook.log
+# PATH="${PATH}"
+# APP_ENV="${APP_ENV}"
+# ROOT="${ROOT}"
+# RELEASE="${RELEASE}"
+# NEWREV="${NEWREV}"
+# HOOKDIR="${HOOKDIR}"
+# echo "path=$PATH" >> ${ROOT}/hook.log
+# echo "app_env=$APP_ENV" >> ${ROOT}/hook.log
+# echo "newrev=$NEWREV" >> ${ROOT}/hook.log
+# echo "root=$ROOT" >> ${ROOT}/hook.log
+# echo "hookdir=$HOOKDIR" >> ${ROOT}/hook.log
+
+# "lower our shields", i.e. stop the app server using Upstart service created via Foreman/Procfile:
+sudo service osprotect stop
+
+# ln -s "${ROOT}/shared/bundled_gems" "vendor/bundle"
+# bundle install --deployment --without assets development test
+
+echo "end: giddyup stop hook" >> ${ROOT}/hook.log

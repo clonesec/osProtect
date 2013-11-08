@@ -1,0 +1,109 @@
+<div id="wrapper">
+  <div id="content_wrapper">
+    <div class="flashes">
+      <% flash.each do |name, msg| %>
+        <%= content_tag :div, msg, :class=>"flash flash_#{name}" %>
+      <% end %>
+    </div>
+    <div id="osprotect_content" class="with_sidebar">
+      <div id="main_content_wrapper">
+        <div id="main_content">
+          <div id="incident">
+            <%= form_for(@notification) do |f| %>
+              <% if @notification.errors.any? %>
+                <div id="error_explanation">
+                  <h3><%= pluralize(@notification.errors.count, "error") %> prohibited this Notification from being saved:</h3>
+                  <ul>
+                  <% @notification.errors.full_messages.each do |msg| %>
+                    <li><h3><%= msg %></h3></li>
+                  <% end %>
+                  </ul>
+                </div>
+              <% end %>
+              <fieldset class="inputs">
+                <ol>
+                  <li class="run_status required">
+                    <label>Status</label>
+                    <%= f.select(:run_status, options_for_select([["enabled", true], ["disabled", false]], selected: @notification.run_status)) %>
+                  </li>
+                  <li class="name required">
+                    <label>Name</label>
+                    <%= f.text_field :name %>
+                  </li>
+                  <li class="description">
+                    <label>Description</label>
+                    <%= f.text_area :description, :rows => 3, :cols => 50 %>
+                  </li>
+                  <li class="email">
+                    <label>Email</label>
+                    <% @notification.email = @notification.notify_email(current_user) %>
+                    <%= f.text_field :email %>
+                  </li>
+                  <li class="include_events">
+                    <label>Events in Email</label>
+                    <%= f.select(:events_in_email, options_for_select([["yes", true], ["no", false]], selected: @notification.events_in_email)) %>
+                  </li>
+                  <li>
+                    <label>Match Criteria</label>
+                  </li>
+                  <fieldset class="inputs" style="margin-top:-12px; margin-left:140px">
+                    <ol>
+                      <li class="minimum_matches">
+                        <label>Minimum matches</label>
+                        <%= collection_select('q', :minimum_matches, Notification.minimum_matches_selections, :id, :name, selected: @event_search.minimum_matches) %>
+                      </li>
+                      <li class="priority">
+                        <label>Priority</label>
+                        <%= collection_select('q', :sig_priority, SignatureDetail.priorities(current_user), :sig_priority, :sig_priority, include_blank: true, selected: @event_search.sig_priority) %>
+                      </li>
+                      <li class="signature">
+                        <label>Signature</label>
+                        <%= collection_select('q', :sig_id, SignatureDetail.selections(current_user), :id, :sig_name, include_blank: true, selected: @event_search.sig_id) %>
+                      </li>
+                      <li class="source_address">
+                        <label>Source IP Address</label>
+                        <%= text_field_tag 'q[source_address]', @event_search.source_address, size: "30" %>
+                      </li>
+                      <li class="source_port">
+                        <label>Source Port</label>
+                        <%= text_field_tag 'q[source_port]', @event_search.source_port, size: "30" %>
+                      </li>
+                      <li class="destination_address">
+                        <label>Destination IP Address</label>
+                        <%= text_field_tag 'q[destination_address]', @event_search.destination_address, size: "30" %>
+                      </li>
+                      <li class="destination_port">
+                        <label>Destination Port</label>
+                        <%= text_field_tag 'q[destination_port]', @event_search.destination_port, size: "30" %>
+                      </li>
+                      <li class="sensor">
+                        <label>Detection Engine</label>
+                        <%= collection_select('q', :sensor_id, Sensor.selections(current_user), :id, :hostname, include_blank: true, selected: @event_search.sensor_id) %>
+                      </li>
+                    </ol>
+                  </fieldset>
+                  <li class="buttons commit" style="margin-top:-15px">
+                    <label>&nbsp;</label>
+                    <%= f.submit %>
+                  </li>
+                </ol>
+              </fieldset>
+            <% end %>
+          </div> <!-- incident -->
+        </div> <!-- main_content -->
+      </div> <!-- main_content_wrapper -->
+
+      <div id="sidebar">
+        <div class="sidebar_section panel">
+          <h3 style="margin-top:-2px">&larr; <%= @notification.new_record? ? "new Notification" : "Notification: #{@notification.id}" %></h3>
+          <div class="panel_contents">
+              <!-- <ul>
+                <li>You have <%#= number_with_delimiter current_user.notifications.count %> notifications.</li>
+              </ul> -->
+          </div> <!-- panel_contents -->
+        </div> <!-- sidebar_section -->
+      </div> <!-- sidebar -->
+
+    </div> <!-- osprotect_content -->
+  </div> <!-- content_wrapper -->
+</div> <!-- wrapper -->

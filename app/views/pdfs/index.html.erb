@@ -1,0 +1,105 @@
+<%
+if params[:type] == 'notification'
+	@title = "Notification PDF's"
+else
+	@title = 'PDF Reports'
+end
+%>
+<div class="flashes">
+  <% flash.each do |name, msg| %>
+    <%= content_tag :div, msg, :class=>"flash flash_#{name}" %>
+  <% end %>
+</div>
+<div id="osprotect_content" class="without_sidebar">
+  <div id="main_content_wrapper">
+    <div id="main_content">
+      <div class="paginated_collection">
+        <!-- <h3><%#= link_to "Notification #{@notification.id}", edit_notification_path(id: @notification.id) %></h3> -->
+        <div class="pagination_information"><%= page_entries_info @pdfs %></div>
+        <div class="paginated_collection_contents">
+          <div class="index_content">
+            <div class="index_as_table">
+              <table border="0" cellspacing="0" cellpadding="0" id="events" class="index_table">
+                <thead>
+                  <tr>
+                    <th>Click to download PDF</th>
+                    <th>Criteria</th>
+                    <th>Created</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% unless @pdfs.blank? %>
+                      <% @pdfs.each do |pdf| %>
+													<% pdf_user = User.find(pdf.user_id) %>
+                          <tr class="<%= cycle('even', 'odd') %>">
+                            <td>
+                              <% if pdf.file_name.blank? %>
+                                  in progress...
+                              <% else %>
+                                  <% if pdf_user.id == current_user.id %>
+                                      <%= link_to pdf.file_name, pdf_path(id: pdf.id), style: "text-decoration:none" %>
+                                  <% else %>
+                                      <%= pdf.file_name %>
+                                  <% end %>
+                              <% end %>
+                              <div>
+                                created for: <%= pdf_user.username%>
+                                <br />
+                                owner: <%= pdf_user.username%>
+                                <br />
+																<%# very ugly code: %>
+																<% if pdf.pdf_type == 4 # notification %>
+																		notification: 
+																		<% notification = Notification.find(pdf.report_id) %>
+		                                <% if pdf_user.id == current_user.id %>
+		                                    <%= link_to notification.name, edit_notification_path(pdf.report_id), style: "text-decoration:none" %>
+		                                <% else %>
+		                                    <%= link_to notification.name, notification_path(pdf.report_id), style: "text-decoration:none" %>
+		                                <% end %>
+																<% else %>
+                                		report: 
+		                                <% if pdf_user.id == current_user.id %>
+		                                    <%= link_to pdf.report.name, edit_report_path(pdf.report), style: "text-decoration:none" %>
+		                                <% else %>
+		                                    <%= link_to pdf.report.name, report_path(pdf.report), style: "text-decoration:none" %>
+		                                <% end %>
+																<% end %>
+                              </div>
+                            </td>
+                            <td>
+                              <% unless pdf.creation_criteria.blank? %>
+                                  <span style="font-size:0.9em">
+                                    <%= raw "Priority: #{pdf.creation_criteria[:sig_priority]}<br />" unless pdf.creation_criteria[:sig_priority].blank? %>
+                                    <%= raw "Sig_id: #{pdf.creation_criteria[:sig_id]}<br />" unless pdf.creation_criteria[:sig_id].blank? %>
+                                    <%= raw "#{SignatureDetail.find(pdf.creation_criteria[:sig_id]).sig_name}<br />" unless pdf.creation_criteria[:sig_id].blank? %>
+                                    <%= raw "SrcIP: #{pdf.creation_criteria[:source_address]}" unless pdf.creation_criteria[:source_address].blank? %>
+                                    <%= raw "SrcPort: #{pdf.creation_criteria[:source_port]}<br />" unless pdf.creation_criteria[:source_port].blank? %>
+                                    <%= raw "DestIP: #{pdf.creation_criteria[:destination_address]}" unless pdf.creation_criteria[:destination_address].blank? %>
+                                    <%= raw "DestPort: #{pdf.creation_criteria[:destination_port]}<br />" unless pdf.creation_criteria[:destination_port].blank? %>
+                                    <%= raw "Sensor: #{pdf.creation_criteria[:sensor_id]}<br />" unless pdf.creation_criteria[:sensor_id].blank? %>
+                                    <%= raw "Range: #{pdf.creation_criteria[:relative_date_range]}<br />" unless pdf.creation_criteria[:relative_date_range].blank? %>
+                                    <%= raw "Begin: #{pdf.creation_criteria[:timestamp_gte]}" unless pdf.creation_criteria[:timestamp_gte].blank? %>
+                                    <%= raw "End: #{pdf.creation_criteria[:timestamp_lte]}" unless pdf.creation_criteria[:timestamp_lte].blank? %>
+                                  </span>
+                              <% end %>
+                            </td>
+                            <td><%= pdf.created_at %></td>
+                            <td><%= link_to 'delete', pdf, data: {confirm: 'Are you sure?'}, method: :delete %></td>
+                          </tr>
+                      <% end %>
+                  <% else %>
+                    <tr><td colspan="6"><h3>No PDFs found!</h3></td></tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div> <!-- index_as_table -->
+          </div> <!-- index_content -->
+        </div> <!-- paginated_collection_contents -->
+        <div id="index_footer">
+          <%= will_paginate @pdfs %>
+        </div> <!-- index_footer -->
+      </div> <!-- paginated_collection -->
+    </div> <!-- main_content -->
+  </div> <!-- main_content_wrapper -->
+</div> <!-- osprotect_content -->

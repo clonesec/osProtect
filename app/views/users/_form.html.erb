@@ -1,0 +1,79 @@
+<div id="wrapper">
+  <div id="content_wrapper">
+    <div class="flashes">
+      <% flash.each do |name, msg| %>
+        <%= content_tag :div, msg, :class=>"flash flash_#{name}" %>
+      <% end %>
+    </div>
+    <div id="osprotect_content" class="with_sidebar">
+      <div id="main_content_wrapper">
+        <div id="main_content">
+          <div id="incident">
+            <%= form_for(@user) do |f| %>
+              <% if @user.errors.any? %>
+                <div id="error_explanation">
+                  <h3><%= pluralize(@user.errors.count, "error") %> prohibited this User from being saved:</h3>
+                  <ul>
+                  <% @user.errors.full_messages.each do |msg| %>
+                    <li><h3><%= msg %></h3></li>
+                  <% end %>
+                  </ul>
+                </div>
+              <% end %>
+              <fieldset class="inputs">
+                <ol>
+                  <li class="name required" id="user_name_input">
+                    <%= f.label :username %>
+                    <% if @user.username == 'admin' %>
+                      <%= f.text_field :username, disabled: "disabled" %>
+                    <% else %>
+                      <%= f.text_field :username,  autocomplete: "off" %>
+                    <% end %>
+                  </li>
+                  <% if @user.username == 'admin' %>
+                    <li class="admin" id="admin_no_input">
+                      <label>&nbsp;</label>
+                      <em>note: the default admin name can not be changed, but you may change the email or password.</em>
+                    </li>
+	                  <li class="no_events_yesterday_notification required" id="user_no_events_yesterday_notification_input">
+	                    <%= f.label 'If no Events yesterday' %>
+	                    <%= f.select(:no_events_yesterday_notification, options_for_select([["Email me", true], ["Don't email me", false]], selected: @user.no_events_yesterday_notification)) %>
+	                  </li>
+                  <% end %>
+                  <li class="email required" id="user_email_input">
+                    <%= f.label :email %>
+                    <%= f.text_field :email %>
+                  </li>
+                  <li class="password required" id="user_password_input">
+                    <%= f.label :password %>
+                    <%= f.password_field :password, :autocomplete => "off" %>
+                  </li>
+                  <li class="password_confirmation required" id="user_password_confirmation_input">
+                    <%= f.label :password_confirmation %>
+                    <%= f.password_field :password_confirmation, :autocomplete => "off" %>
+                  </li>
+                  <li class="buttons commit" style="margin-top:-5px">
+                    <label>&nbsp;</label>
+                    <%= f.submit %>
+                  </li>
+                </ol>
+              </fieldset>
+            <% end %>
+          </div> <!-- incident -->
+        </div> <!-- main_content -->
+      </div> <!-- main_content_wrapper -->
+
+      <div id="sidebar">
+        <div class="sidebar_section panel">
+          <h3 style="margin-top:-2px">&larr; <%= @user.new_record? ? "new User" : "User Id: #{@user.id}" %></h3>
+          <div class="panel_contents">
+              <!-- <ul>
+                <li>Users count: <%#= number_with_delimiter User.count %></li>
+              </ul> -->
+          </div> <!-- panel_contents -->
+        </div> <!-- sidebar_section -->
+      </div> <!-- sidebar -->
+
+    </div> <!-- osprotect_content -->
+  </div> <!-- content_wrapper -->
+</div> <!-- wrapper -->

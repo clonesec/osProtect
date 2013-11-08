@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>osProtect: Notification Results</title>
+</head>
+<body>
+  <h2><%= @user.username %>:</h2>
+  <blockquote>
+    <p>
+      <strong><%= pluralize(@events_count, 'event') %></strong> 
+			were found matching the criteria for notification:
+			<br />
+			<%= @report_title %>
+    </p>
+    <% if @events_count > 0 %>
+        <p>View the attached PDF for details.</p>
+    <% end %>
+  </blockquote>
+</body>
+</html>

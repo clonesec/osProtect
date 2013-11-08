@@ -1,0 +1,88 @@
+# cron info:
+# Input consists of six fields, separated by blanks.
+# The first five give a date and time in the following form:
+# 1. m - minute, expressed as a number from 0 through 59.
+# 2. h - hour, expressed as a number from 0 through 23.
+# 3. D - day of the month, expressed as a number from 1 through 31.
+# 4. M - month of the year, expressed as a number from 1 through 12.
+# 5. WD - day of the week, expressed as a number from 0 through 6 (with 0 standing for Sunday).
+# Any of these fields may contain an asterisk * standing for all possible values.
+# For example, if you have an * as the day of the month, the job runs every day of the month.
+# A field can also contain a set of numbers separated by commas, or a range of numbers, with the
+# first number followed by a minus sign - followed by the second number.
+# If you give specific days for both day of the month and day of the week, the two are OR'ed together.
+# examples:
+# 1 2 3 4 5
+# m h D M WD
+# 0 0 * * * -- midnight every day
+# 0 0 * * 1-5 -- midnight every weekday
+# 0 0 1,15 * * -- midnight on 1st and 15th of month
+# 0 0 1 * 5 -- midnight on 1st of month and every Friday
+# The sixth field of a crontab entry is a string that your shell executes at the specified time.
+
+process_no_events_for_yesterday:
+  # "30 1 * * *" == 1:30am every day ... check if no events received yesterday
+  cron: "0 1 * * *"
+  class: CronTask
+  queue: osprotect_no_events_yesterday
+  # method to perform in app/workers/cron_task.rb:
+  args: "no_events_yesterday"
+  description: "No Events for Yesterday Check"
+  rails_envs: development, production
+
+process_daily_reports:
+  # "0 1 * * *" == 1am every day ... daily report for yesterday
+  cron: "0 1 * * *"
+  class: CronTask
+  queue: osprotect_daily_reports
+  # method to perform in app/workers/cron_task.rb:
+  args: "daily_report_emailed_as_pdf"
+  description: "Daily Report"
+  rails_envs: development, production
+
+process_weekly_reports:
+  # "0 2 * * 0" == 2am every Sunday ... weekly report for last week
+  cron: "0 2 * * 0"
+  class: CronTask
+  queue: osprotect_weekly_reports
+  # method to perform in app/workers/cron_task.rb:
+  args: "weekly_report_emailed_as_pdf"
+  description: "Weekly Report"
+  rails_envs: development, production
+
+process_monthly_reports:
+  # "0 3 1 * *" == 3am on 1st of month ... monthly report for last month:
+  cron: "0 3 1 * *"
+  class: CronTask
+  queue: osprotect_monthly_reports
+  # method to perform in app/workers/cron_task.rb:
+  args: "monthly_report_emailed_as_pdf"
+  description: "Monthly Report"
+  rails_envs: development, production
+
+process_notifications:
+  every: 2m
+  class: CronTask
+  queue: osprotect_notifications
+  # method to perform in app/workers/cron_task.rb:
+  args: "notifications_emailed_as_html"
+  description: "Notifications"
+  rails_envs: development, production
+
+# process_event_notifications:
+#   every: 1m
+#   class: CronTask
+#   queue: osprotect_notifications
+#   # method to perform in app/workers/cron_task.rb:
+#   args: "event_notifications"
+#   description: "Notifications"
+#   rails_envs: development, production
+
+# email_notifications:
+#   every: 5m
+#   class: CronTask
+#   queue: osprotect_notifications
+#   # method to perform in app/workers/cron_task.rb:
+#   args: "batched_email_notifications"
+#   description: "Email Event Notifications"
+#   rails_envs: development, production

@@ -1,0 +1,56 @@
+# this is loaded by: config/initializers/load_app_config.rb
+#
+# usage: APP_CONFIG[:show_versions_and_limits]
+#
+# notes:
+# The per_page (i.e. pagination) setting affects all online listings.
+#
+# Notifications and Reports require Redis and Resque Scheduler and workers to be up and running.
+#
+# Weekly and monthly reports:
+# - are too time/resource consuming
+# - they are really just a repeat of the Daily work, but at 7/30 times the daily amount
+# - except for the summary/pulse portion they are just a copies of the daily's
+# so they are initially disabled (set to false).
+# You may change these if you have the resources to handle the workload involved.
+
+development:
+  # web_server: dev_whatever
+  host: localhost
+  web_server: apache
+  version: 2.0
+  show_versions_and_limits: true
+  emails_from: do.not.reply@localhost
+  per_page: 12
+  # -- Notifications config:
+  can_do_notifications: true
+  max_events_that_can_be_copied_to_incidents_for_each_notification: 50
+  # -- Reports/PDFs config:
+  reports_path: /Users/cleesmith/Sites/osProtect/shared/reports
+  can_do_reports: true
+  max_incidents_per_pdf: 50
+  max_events_per_pdf: 2000
+  can_daily_report: true
+  can_weekly_report: true
+  can_monthly_report: true
+
+production:
+  # web_server: nginx
+  # host: osprotect.appsudo.com
+  web_server: apache
+  host: 38.123.140.50
+  version: 2.0
+  show_versions_and_limits: true
+  emails_from: do.not.reply@osprotect.clone-systems.com
+  per_page: 12
+  # -- Notifications config:
+  can_do_notifications: true
+  max_events_that_can_be_copied_to_incidents_for_each_notification: 500
+  # -- Reports/PDFs config:
+  reports_path: /home/osprotect/apps/osProtect/shared/reports
+  can_do_reports: true
+  max_incidents_per_pdf: 2000
+  max_events_per_pdf: 2000
+  can_daily_report: true
+  can_weekly_report: true
+  can_monthly_report: true

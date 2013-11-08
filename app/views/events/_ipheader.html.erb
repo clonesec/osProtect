@@ -1,0 +1,46 @@
+<!-- ip header: src, dst, ver, hlen, tos, len, id, flags, off, ttl, proto, csum -->
+<tr>
+  <th>IP header</th>
+  <td>
+    <% if @event && @event.iphdr %>
+      <table border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td>src</td>
+          <td>dst</td>
+          <td>ver</td>
+          <td>hlen</td>
+          <td>tos</td>
+          <td>len</td>
+          <td>id</td>
+          <td>flags</td>
+          <td>off</td>
+          <td>ttl</td>
+          <td>proto</td>
+          <td>csum</td>
+        </tr>
+        <tr>
+          <td>
+            <%=@event.iphdr.ip_source.to_s%><br />
+            <small>(<%=@event.iphdr.ip_src%>)</small>
+          </td>
+          <td>
+            <%=@event.iphdr.ip_destination.to_s%><br />
+            <small>(<%=@event.iphdr.ip_dst%>)</small>
+          </td>
+          <td><%=@event.iphdr.ip_ver%></td>
+          <td><%=@event.iphdr.ip_hlen%></td>
+          <td><%=@event.iphdr.ip_tos%></td>
+          <td><%=@event.iphdr.ip_len%></td>
+          <td><%=@event.iphdr.ip_id%></td>
+          <td><%=@event.iphdr.ip_flags%></td>
+          <td><%=@event.iphdr.ip_off%></td>
+          <td><%=@event.iphdr.ip_ttl%></td>
+          <td><%=@event.iphdr.ip_proto%></td>
+          <td><%=@event.iphdr.ip_csum%></td>
+        </tr>
+      </table>
+    <% else %>
+      no IP header information found!
+    <% end %>
+  </td>
+</tr>

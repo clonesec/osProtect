@@ -1,0 +1,76 @@
+<% @title = 'Notifications' %>
+<div class="flashes">
+  <% flash.each do |name, msg| %>
+    <%= content_tag :div, msg, :class=>"flash flash_#{name}" %>
+  <% end %>
+</div>
+<div id="osprotect_content" class="without_sidebar">
+  <div id="main_content_wrapper">
+    <div id="main_content">
+      <div class="paginated_collection">
+        <%= form_tag new_notification_path, method: :get do %>
+          <div class="buttons" id="add_new_notification">
+            <%= submit_tag 'New Notification' %>
+          </div>
+        <% end %>
+        <div class="pagination_information"><%= page_entries_info @notifications %></div>
+        <div class="paginated_collection_contents">
+          <div class="index_content">
+            <div class="index_as_table">
+              <table border="0" cellspacing="0" cellpadding="0" id="events" class="index_table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <!-- <th>Results</th> -->
+                    <th>Match Criteria</th>
+                    <th>Status</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% unless @notifications.blank? %>
+                      <% @notifications.each do |notification| %>
+                          <tr class="<%= cycle('even', 'odd') %>">
+                            <td><%= link_to notification.name, edit_notification_path(notification) %></td>
+                            <td>
+                              <% unless notification.notify_criteria.blank? %>
+                                  <span style="font-size:0.9em">
+                                    <ul>
+                                      <% notification.notify_criteria.each do |key,value|
+                                          next if value.blank?
+                                          key = 'priority' if key == 'sig_priority'
+                                          value = 'any' if key == 'minimum_matches' && value == '0'
+                                          if key == 'sensor_id'
+                                            key = 'sensor'
+                                            value = Sensor.find(value.to_i).hostname
+                                          end
+                                          if key == 'sig_id'
+                                            key = 'signature'
+                                            value = SignatureDetail.find(value.to_i).sig_name
+                                          end
+                                        %>
+                                        <li><em><%=key%>:</em> <strong><%=value%></strong></li>
+                                      <% end %>
+                                    </ul>
+                                  </span>
+                              <% end %>
+                            </td>
+                            <td><%= notification.status %></td>
+                            <td><%= link_to 'delete', notification, data: {confirm: 'Are you sure?'}, method: :delete %></td>
+                          </tr>
+                      <% end %>
+                  <% else %>
+                    <tr><td colspan="6"><h3>No notifications found!</h3></td></tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div> <!-- index_as_table -->
+          </div> <!-- index_content -->
+        </div> <!-- paginated_collection_contents -->
+        <div id="index_footer">
+          <%= will_paginate @notifications %>
+        </div> <!-- index_footer -->
+      </div> <!-- paginated_collection -->
+    </div> <!-- main_content -->
+  </div> <!-- main_content_wrapper -->
+</div> <!-- osprotect_content -->

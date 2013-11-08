@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>osProtect: Notification Results</title>
+</head>
+<body>
+  <p><strong><%= @user.username %></strong>,</p>
+  <p>
+		Notification:
+		<strong><%= @notification.name %></strong>
+	</p>
+  <p>
+		Description:
+		<%= simple_format(@notification.description) %>
+	</p>
+	<p>
+	  <strong><%= pluralize(@events_count, 'event') %></strong> 
+		found matching your notification criteria during:
+		<br />
+	  <%= @report_time %>
+	</p>
+	<hr />
+  <%# Signature Sections: %>
+  <% if @notification.notification_signature_sections.any? %>
+    <% @notification.notification_signature_sections.each_with_index do |notification_section, x| %>
+      <% title = notification_section.title.blank? ? "Untitled Signature Section" : notification_section.title %>
+			<p>Section: <%= title %></p>
+      <p>
+				Description:
+	      <% if notification_section.description.blank? %>
+					none
+	      <% else %>
+					<%= notification_section.description %>
+	      <% end %>
+			</p>
+      <% if notification_section.signature_ids.blank? %>
+      	<p><strong>No signatures selected for this section!</strong></p>
+      <% else %>
+        <% signature_section_events = @events.where("signature.sig_id IN (?)", notification_section.signature_ids) %>
+			  <table border="1" cellspacing="2" cellpadding="2">
+			    <thead>
+			      <tr>
+			        <th>Priority</th>
+			        <th>Signature</th>
+			        <th>Source</th>
+			        <th>Destination</th>
+			        <th>Sensor</th>
+			        <th>Timestamp</th>
+			      </tr>
+			    </thead>
+			    <tbody>
+						<% if signature_section_events.count <= 0 %>
+			          <tr>
+			            <td colspan="6">No matching Events found!</td>
+			          </tr>
+						<% else %>
+								<% signature_section_events.each do |event| %>
+					          <tr class="<%= cycle('even', 'odd') %>">
+					            <td><%= event.priority %></td>
+					            <td><%= event.signature %></td>
+					            <td><%= event.source_ip_port %></td>
+					            <td><%= event.destination_ip_port %></td>
+					            <td><%= event.sensor_name %></td>
+					            <td><%= event.timestamp %></td>
+					          </tr>
+					      <% end %>
+						<% end %>
+			    </tbody>
+			  </table>
+				<br /><hr /><br />
+      <% end %>
+    <% end %>
+  <% end %>
+  <% unless @notification.notification_signature_sections.any? %>
+		<h2>Events</h2>
+	  <table border="1" cellspacing="2" cellpadding="2">
+	    <thead>
+	      <tr>
+	        <th>Priority</th>
+	        <th>Signature</th>
+	        <th>Source</th>
+	        <th>Destination</th>
+	        <th>Sensor</th>
+	        <th>Timestamp</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+			<% @events.each do |event| %>
+	          <tr class="<%= cycle('even', 'odd') %>">
+	            <td><%= event.priority %></td>
+	            <td><%= event.signature %></td>
+	            <td><%= event.source_ip_port %></td>
+	            <td><%= event.destination_ip_port %></td>
+	            <td><%= event.sensor_name %></td>
+	            <td><%= event.timestamp %></td>
+	          </tr>
+	      <% end %>
+	    </tbody>
+	  </table>
+		<br /><hr /><br />
+  <% end %>
+	<small>* end of notification report *</small><hr /><br />
+</body>
+</html>

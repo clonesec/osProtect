@@ -1,0 +1,22 @@
+<span>
+  &nbsp;&nbsp;(<%= params[:range].to_s.titleize %>:&nbsp;&nbsp;
+  <%= @start_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") %>
+  &nbsp;&nbsp;-&nbsp;&nbsp;
+  <%= @end_time.utc.strftime("%a %b %d, %Y %I:%M:%S %P %Z") %>)
+</span>
+<div class="spacerx13">&nbsp;</div>
+<ul id="ddm">
+  <li class="page-options">
+    <%= link_to image_tag("arrow.png") + 'Select a Time Period', '#', class: 'no_menu_link' %>
+    <ul id="frequencybox" style="display: none;">
+      <li><%= link_to 'Today', pulse_path %></li>
+      <li><%= link_to 'Last 24 Hours', pulse_path(range: 'last_24') %></li>
+      <li><%= link_to 'This Week', pulse_path(range: 'week') %></li>
+      <li><%= link_to 'Last Week', pulse_path(range: 'last_week') %></li>
+      <li><%= link_to 'This Month', pulse_path(range: 'month') %></li>
+      <li><%= link_to 'Last Month', pulse_path(range: 'last_month') %></li>
+      <li><%= link_to 'Past Year', pulse_path(range: 'past_year') %></li>
+      <li><%= link_to 'Year', pulse_path(range: 'year') %></li>
+    </ul>
+  </li>
+</ul>

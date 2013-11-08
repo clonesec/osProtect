@@ -1,0 +1,173 @@
+// ----------------------------------- Header 
+#header { 
+  overflow: visible;
+  padding: 9px 0;
+  z-index: 900;
+
+  h1 { 
+    display: inline-block; 
+    color: #cdcdcd;
+    margin-right: 20px; 
+    margin-bottom: 0px;
+    font-size: 1.3em; 
+    font-weight: normal; 
+  }
+
+  a, a:link { color: #4f4f4f; }
+
+  a img { border: 0; }
+
+  .cursor { cursor: default; }
+
+  ul#tabs {
+    margin: 0; 
+    padding: 0; 
+    display: inline-block; 
+    height: 100%;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+
+    & > li { 
+      display: inline-block;
+      margin-left: -3px;
+      padding: 8px 0;
+      height: 18px;
+      line-height: 18px;
+      font-size: 1.0em;
+      position: relative;
+
+      a { 
+        font-size: 11pt; 
+        text-decoration: none; 
+        padding: 9px 11px; 
+        position: relative;
+      }
+
+      &.current > a {
+        background:url(/assets/nav-bg.png) repeat-x scroll 0 -36px transparent;
+        color: #fff;
+      }
+
+      &.has_nested > a {
+        background: image-url('nested_menu_arrow.gif') no-repeat 89% 50%; 
+        padding-right: 20px; 
+        z-index: 1050;
+      }
+
+      &.has_nested.current > a { 
+        background: $current-menu-item-background image-url('nested_menu_arrow_dark.gif') no-repeat 89% 50%; 
+        padding-right: 20px; 
+      }
+
+      &:hover > a { 
+        background:url(/assets/nav-bg.png) repeat-x scroll 0 -36px transparent;
+        padding: 9px 11px;
+        color: #fff;
+      }
+
+      &.has_nested:hover > a { 
+        @include rounded-top(10px);
+        border-bottom: 5px solid $hover-menu-item-background;
+        background: $hover-menu-item-background image-url('nested_menu_arrow_dark.gif') no-repeat 89% 50%;
+      }
+
+
+      /* Hover on li, display the ul */
+      &:hover ul { display: block;}
+      /* Drop down menus */
+      ul { 
+        @include opacity;
+        @include rounded-all(0,10px,10px,10px);
+        @include shadow(0, 1px, 3px, #444);
+        background: $hover-menu-item-background;
+        position: absolute; 
+        width: 175px; 
+        margin-top: 5px;
+        float: left;
+        display: none; 
+        padding: 5px 0px 5px 0;
+        list-style: none;
+        z-index: 1010;
+
+        li { 
+          margin: 0px; 
+          a { 
+            background: none;
+            display: block; 
+            &:hover { color: #fff; background: #999; }
+          }
+
+          &.current {
+            a { @include rounded(0) }
+          }
+        }
+      }
+    }
+
+    & > li#pulse,
+    & > li#events,
+    & > li#incidents,
+    & > li#reports,
+    & > li#configuration {
+      border-right: 1px solid #C8C8C8;
+    }
+
+    & > li#administration,
+    & > li#help,
+    & > li#logout {
+      border-left: 1px solid #C8C8C8;
+    }
+
+    & > li#logout img {
+      padding-right: 5px;
+    }
+  }
+
+  ul#tabs > li#pulse.current > a,
+  ul#tabs > li#pulse a:hover {
+    border-radius: 4px 0 0 4px;
+    padding: 9px 11px;
+  }
+
+  ul#tabs > li > ul > li > a:hover { border-radius: 0; }
+
+  #utility_nav { 
+    position: absolute; right: 25px; top: 10px; 
+    color: #aaa;
+    span, a { margin-left: 10px; }
+
+    a { text-decoration: none; }
+    a:hover { color: #fff; }
+  }
+
+  .header_banner {
+    padding: 25px 0 0 20px;
+    float: left;
+    height: 70px;
+    text-align: left;
+    width: 260px;
+  }
+}
+
+.logo {
+  float: left;
+  height: 49px;
+  width: 237px;
+  text-align: left;
+}
+
+.app_name {
+  background:url(/assets/osprotect.png) no-repeat scroll 0 10px transparent;
+  float: right;
+  height: 85px;
+  width: 160px;
+}
+
+.header_menu {
+  background:url(/assets/nav-bg.png) repeat-x scroll 0 0 transparent;
+  @include rounded-all(4px,4px,4px,4px);
+  overflow: visible;
+  border: 1px solid #CDCDCD;
+  padding-left: 2px;
+}

@@ -1,0 +1,61 @@
+<% @title = 'Locations for Detection Engine Rules' %>
+<div class="flashes">
+  <% flash.each do |name, msg| %>
+    <%= content_tag :div, msg, :class=>"flash flash_#{name}" %>
+  <% end %>
+</div>
+<div id="osprotect_content" class="without_sidebar">
+  <div id="main_content_wrapper">
+    <div id="main_content">
+      <div class="paginated_collection">
+        <%= form_tag new_rules_location_path, method: :get do %>
+          <div class="buttons" id="add_new_group">
+            <%= submit_tag 'Add a new Rules Location' %>
+          </div>
+        <% end %>
+        <div class="pagination_information"><%= page_entries_info @rules_locations %></div>
+        <div class="paginated_collection_contents">
+          <div class="index_content">
+            <div class="index_as_table">
+              <table border="0" cellspacing="0" cellpadding="0" id="events" class="index_table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Folder containing ".rules" files &nbsp;<small>(clicking on each will list the ".rules" files in that folder)</small></th>
+                    <th>Location FQDN / IP</th>
+                    <th>Port</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if @rules_locations %>
+                      <% @rules_locations.each do |rules_location| %>
+                          <tr class="<%= cycle('even', 'odd') %>">
+                            <td><%= link_to rules_location.name, edit_rules_location_path(rules_location), {style: "text-decoration:none", title: "edit this Rules Location"} %></td>
+                            <td><%= link_to rules_location.rules_folder, rules_location, {style: "text-decoration:none", title: "list '.rules' files in this folder on server #{rules_location.url_domain_ip}:#{rules_location.url_port}"} %></td>
+                            <td>
+                              <% if rules_location.url_domain_ip.blank? %>
+                                  local server
+                              <% else %>
+                                  <%= rules_location.url_domain_ip %>
+                              <% end %>
+                            </td>
+                            <td><%= rules_location.url_port %></td>
+                            <td><%= link_to 'delete', rules_location, method: :delete, data: {confirm: 'Are you sure you want to delete this Rules Location?'}, style: "text-decoration:none" %></td>
+                          </tr>
+                      <% end %>
+                  <% else %>
+                    <tr><td colspan="6"><h3>No rules locations found!</h3></td></tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div> <!-- index_as_table -->
+          </div> <!-- index_content -->
+        </div> <!-- paginated_collection_contents -->
+        <div id="index_footer">
+          <%= will_paginate @rules_locations %>
+        </div> <!-- index_footer -->
+      </div> <!-- paginated_collection -->
+    </div> <!-- main_content -->
+  </div> <!-- main_content_wrapper -->
+</div> <!-- osprotect_content -->

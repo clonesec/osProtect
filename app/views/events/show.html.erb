@@ -1,0 +1,38 @@
+<% @title = 'Event Details' %>
+<div id="osprotect_content" class="without_sidebar">
+  <div id="main_content_wrapper">
+    <div id="main_content">
+      <div class="panel">
+        <h3>
+          Sensor <%=@event.sensor.name%> recorded the following Event at <%=@event.timestamp%>
+        </h3>
+        <div class="panel_contents">
+          <div class="attributes_table event" id="attributes_table_event">
+            <table border="0" cellspacing="0" cellpadding="0">
+              <%= render :partial => 'signature' %>
+              <%= render :partial => 'ipheader' %>
+              <% if @event && @event.tcphdr %>
+                  <%= render :partial => 'tcphdr' %>
+              <% end %>
+              <% if @event && @event.udphdr %>
+                  <%= render :partial => 'udphdr' %>
+              <% end %>
+              <% if @event && @event.icmphdr %>
+                  <%= render :partial => 'icmphdr' %>
+              <% end %>
+              <%= render :partial => 'payload' %>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="sidebar">
+    <br />
+    <div class="buttons">
+      <%#= button_to 'create PDF', event_url(sid: @event.sid, cid: @event.cid, format: :pdf), method: "post", form: {target: "_blank"} %>
+    </div>
+  </div>
+
+</div>
