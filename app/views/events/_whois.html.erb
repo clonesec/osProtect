@@ -1,0 +1,21 @@
+<tr>
+  <th>Whois</th>
+  <td>
+      <table border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td><strong style="font-size:15px"><%= @event.iphdr.ip_source.to_s %></strong></td>
+        </tr>
+        <tr>
+          <td><%= simple_format Whois.whois(@event.iphdr.ip_source.to_s).to_s %></td>
+        </tr>
+      </table>
+      <table border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td><strong style="font-size:15px"><%= @event.iphdr.ip_destination.to_s %></strong></td>
+        </tr>
+        <tr>
+          <td><%= simple_format Whois.whois(@event.iphdr.ip_destination.to_s).to_s %></td>
+        </tr>
+      </table>
+  </td>
+</tr>

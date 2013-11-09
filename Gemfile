@@ -50,9 +50,10 @@ gem 'resque-scheduler'
 gem 'resque_mailer'
 
 # nslookup DNS:
-# gem 'net-dns'
-# gem 'whois'
-# gem 'geoip'
+gem 'whois' # use: Whois.whois('x.x.x.x')
+gem 'net-dns' # use: Resolver('x.x.x.x')
+gem 'geoip' # use: GeoIP.new('config/GeoIP.dat').country('x.x.x.x')
+# gem 'dnsruby'
 # gem 'netaddr'
 
 gem 'quiet_assets', :group => :development

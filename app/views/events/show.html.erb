@@ -20,6 +20,8 @@
               <% if @event && @event.icmphdr %>
                   <%= render :partial => 'icmphdr' %>
               <% end %>
+              <%= render :partial => 'whois' %>
+              <%= render :partial => 'dns' %>
               <%= render :partial => 'payload' %>
             </table>
           </div>

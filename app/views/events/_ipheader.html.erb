@@ -20,12 +20,22 @@
         </tr>
         <tr>
           <td>
-            <%=@event.iphdr.ip_source.to_s%><br />
-            <small>(<%=@event.iphdr.ip_src%>)</small>
+            <%= @event.iphdr.ip_source.to_s %><br />
+            <small>(<%=@event.iphdr.ip_src%>)</small><br />
+						<%
+							geoip = GeoIP.new('config/GeoIP.dat').country(@event.iphdr.ip_source.to_s)
+							country = geoip.blank? ? 'Unknown' : geoip.country_name
+						%>
+						<small><%= country %></small>
           </td>
           <td>
-            <%=@event.iphdr.ip_destination.to_s%><br />
-            <small>(<%=@event.iphdr.ip_dst%>)</small>
+            <%= @event.iphdr.ip_destination.to_s %><br />
+            <small>(<%=@event.iphdr.ip_dst%>)</small><br />
+						<%
+							geoip = GeoIP.new('config/GeoIP.dat').country(@event.iphdr.ip_destination.to_s)
+							country = geoip.blank? ? 'Unknown' : geoip.country_name
+						%>
+						<small><%= country %></small>
           </td>
           <td><%=@event.iphdr.ip_ver%></td>
           <td><%=@event.iphdr.ip_hlen%></td>
