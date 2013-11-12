@@ -1,0 +1,2 @@
+production:
+  allow_requests_from_ip: 127.0.0.1

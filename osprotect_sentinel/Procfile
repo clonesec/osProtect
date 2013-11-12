@@ -1,0 +1,11 @@
+# set RACK_ENV:
+# nano ~/.bashrc
+# nano /etc/environment
+#   ... ensure these lines are present:
+#   RAILS_ENV=production
+#   RACK_ENV=production
+#
+# use Foreman to setup upstart osprotect_sentinel workers starting with port 8500:
+# rvmsudo bundle exec foreman export upstart /etc/init -a rulessentinel -u osprotect -c worker=1 -p 8500
+
+worker: bundle exec thin start -R config.ru -e $RACK_ENV -p $PORT
