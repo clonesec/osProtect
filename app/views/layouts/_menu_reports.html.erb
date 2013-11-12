@@ -10,10 +10,5 @@
     <li id="reports" class="current">
       <%= link_to 'Saved PDF Reports', pdfs_path(type: 'report') %>
     </li> 
-    <% if APP_CONFIG[:can_do_notifications] %>
-      <li id="notifications">
-        <%= link_to "Notification PDF's", pdfs_path(type: 'notification') %>
-      </li>
-    <% end %>
   </ul>
 </li>
