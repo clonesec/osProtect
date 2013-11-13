@@ -1,3 +1,18 @@
-// Place all the styles related to the Incidents controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+#new_incident_button {
+	/*margin-top: -25px;*/
+}
+
+#image_beside_button * {
+	display: inline-block;
+	vertical-align: bottom;
+	margin-top: -1px;
+}
+
+#incidents-check {
+	margin-right: 5px;
+	margin-bottom: 6px;
+}
+
+#delete_selected_incidents {
+	margin: 0px;
+}

@@ -3,7 +3,10 @@ class IncidentsController < ApplicationController
   before_filter :ensure_user_is_setup
   before_action :set_incident, only: [:edit, :update, :destroy]
 
+  respond_to :js, only: :destroy_multiple
+
   def index
+    flash[:notice] = params[:destroy_multiple_incidents_results_message] unless params[:destroy_multiple_incidents_results_message].blank?
     @incidents = current_user.incidents.order(updated_at: :desc).page(params[:page]).per_page(APP_CONFIG[:per_page])
   end
 
@@ -50,10 +53,16 @@ class IncidentsController < ApplicationController
 
   def destroy_multiple
     if params[:incident_ids].blank?
-      redirect_to incidents_url, notice: "No Incidents were selected for deletion!"
+      # redirect_to incidents_url, notice: "No Incidents were selected for deletion!"
+      @response = "No incidents were selected for deletion!"
     else
       Incident.destroy(params[:incident_ids])
-      redirect_to incidents_url, notice: "#{params[:incident_ids].length} Incidents were deleted."
+      # redirect_to incidents_url, notice: "#{params[:incident_ids].length} Incidents were deleted."
+      if params[:incident_ids].length > 1
+        @response = "#{params[:incident_ids].length} incidents were deleted."
+      else
+        @response = "#{params[:incident_ids].length} incident was deleted."
+      end
     end
   end
 
