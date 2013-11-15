@@ -58,7 +58,7 @@ div#container {
 
 .main_header h3 {
   @include rounded-all(12px,12px,0,0);
-  background: url("/assets/content-header.png") repeat-x scroll 0 0 transparent;
+  background: image-url("content-header.png") repeat-x scroll 0 0 transparent;
   border-bottom: 1px solid #bdbdbd;
   color: #565656;
   height: 43px;
@@ -107,7 +107,7 @@ div#container {
 // -------------------------------------- Footer 
 #footer {
   @include rounded-all(0,0,12px,12px);
-  background: url("/assets/login/login-footer.png") repeat-x scroll 0 0 transparent;
+  background: image-url("login/login-footer.png") repeat-x scroll 0 0 transparent;
   border: 1px solid #c8c8c8;
   border-top: 0;
   margin: 0 auto 10px auto;
@@ -289,7 +289,7 @@ table.index_table {
 // -------------------------------------- Charts inside Panels
 #box-holders {
   .priority-box {
-    background: url("/assets/priority-box.png") no-repeat scroll 0 0 transparent;
+    background: image-url("priority-box.png") no-repeat scroll 0 0 transparent;
     float: left;
     height: 210px;
     width: 306px;
@@ -412,7 +412,7 @@ body.logged_out {
     }
 
     .os_protect {
-      background: url("/assets/osprotect.png") no-repeat;
+      background: image-url("osprotect.png") no-repeat;
       margin-top: 8px;
       width: 140px;
       height: 80px;
@@ -431,11 +431,11 @@ body.logged_out {
       height: 287px;
       margin: 35px auto 0 auto;
       border: 1px solid #bdbdbd;
-      background: url("/assets/login/login-bg.jpg") 0px 45px no-repeat;
+      background: image-url("login/login-bg.jpg") 0px 45px no-repeat;
 
       .login_label {
         @include rounded-top(8px);
-        background: url("/assets/login/login-header.png") repeat-x;
+        background: image-url("login/login-header.png") repeat-x;
         margin-bottom: 40px;
         height: 45px;
         border-bottom: 1px solid #bdbdbd;
@@ -463,7 +463,7 @@ body.logged_out {
 
       input.user_submit {
         @include rounded-all(4px);
-        background: url("/assets/login/button-bg.png");
+        background: image-url("login/button-bg.png");
         width: 77px;
         height: 30px;
         color: #fff;
@@ -479,7 +479,7 @@ body.logged_out {
 
       .login_footer {
         @include rounded-bottom(8px);
-        background: url("/assets/login/login-footer.png") repeat-x;
+        background: image-url("login/login-footer.png") repeat-x;
         border-top: 1px solid #bdbdbd;
         line-height: 34px;
         margin-top: 25px;
@@ -509,11 +509,11 @@ body.logged_out {
       height: 287px;
       margin: 35px auto 0 auto;
       border: 1px solid #bdbdbd;
-      background: url("/assets/login/login-bg.jpg") 0px 45px no-repeat;
+      background: image-url("login/login-bg.jpg") 0px 45px no-repeat;
 
       .login_label {
         @include rounded-top(8px);
-        background: url("/assets/login/login-header.png") repeat-x;
+        background: image-url("login/login-header.png") repeat-x;
         margin-bottom: 40px;
         height: 45px;
         border-bottom: 1px solid #bdbdbd;
@@ -542,7 +542,7 @@ body.logged_out {
 
       input.user_submit {
         @include rounded-all(4px);
-        background: url("/assets/login/button-bg.png");
+        background: image-url("login/button-bg.png");
         width: 77px;
         height: 30px;
         color: #fff;
@@ -558,7 +558,7 @@ body.logged_out {
 
       .login_footer {
         @include rounded-bottom(8px);
-        background: url("/assets/login/login-footer.png") repeat-x;
+        background: image-url("login/login-footer.png") repeat-x;
         border-top: 1px solid #bdbdbd;
         line-height: 34px;
         margin-top: 25px;

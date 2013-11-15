@@ -45,23 +45,23 @@
       }
 
       &.current > a {
-        background:url(/assets/nav-bg.png) repeat-x scroll 0 -36px transparent;
+        background: image-url("nav-bg.png") repeat-x scroll 0 -36px transparent;
         color: #fff;
       }
 
       &.has_nested > a {
-        background: image-url('nested_menu_arrow.gif') no-repeat 89% 50%; 
+        background: image-url("nested_menu_arrow.gif") no-repeat 89% 50%; 
         padding-right: 20px; 
         z-index: 1050;
       }
 
       &.has_nested.current > a { 
-        background: $current-menu-item-background image-url('nested_menu_arrow_dark.gif') no-repeat 89% 50%; 
+        background: $current-menu-item-background image-url("nested_menu_arrow_dark.gif") no-repeat 89% 50%; 
         padding-right: 20px; 
       }
 
       &:hover > a { 
-        background:url(/assets/nav-bg.png) repeat-x scroll 0 -36px transparent;
+        background: image-url("nav-bg.png") repeat-x scroll 0 -36px transparent;
         padding: 9px 11px;
         color: #fff;
       }
@@ -69,7 +69,7 @@
       &.has_nested:hover > a { 
         @include rounded-top(10px);
         border-bottom: 5px solid $hover-menu-item-background;
-        background: $hover-menu-item-background image-url('nested_menu_arrow_dark.gif') no-repeat 89% 50%;
+        background: $hover-menu-item-background image-url("nested_menu_arrow_dark.gif") no-repeat 89% 50%;
       }
 
 
@@ -158,14 +158,14 @@
 }
 
 .app_name {
-  background:url(/assets/osprotect.png) no-repeat scroll 0 10px transparent;
+  background: image-url("osprotect.png") no-repeat scroll 0 10px transparent;
   float: right;
   height: 85px;
   width: 160px;
 }
 
 .header_menu {
-  background:url(/assets/nav-bg.png) repeat-x scroll 0 0 transparent;
+  background: image-url("nav-bg.png") repeat-x scroll 0 0 transparent;
   @include rounded-all(4px,4px,4px,4px);
   overflow: visible;
   border: 1px solid #CDCDCD;

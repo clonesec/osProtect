@@ -23,7 +23,7 @@
       text-decoration: none;
 
       &:hover {
-        background: url("/assets/nav-bg.png") 0px -36px repeat-x;
+        background: image-url("nav-bg.png") 0px -36px repeat-x;
         display: block;
         height: 34px;
         color: #fff;
@@ -72,7 +72,7 @@
         &:hover {
           color: #20407A;
           background: #EEEEEE;
-          background: url("/assets/nav-bg.png") 0px -36px repeat-x;
+          background: image-url("nav-bg.png") 0px -36px repeat-x;
           color: #fff;
         }
       }
@@ -86,7 +86,7 @@
     padding: 0;
 
     a.no_menu_link {
-      background: url("/assets/nav-bg.png") repeat-x;
+      background: image-url("nav-bg.png") repeat-x;
       border: 1px solid #c8c8c8;
       padding: 0 0 0 5px;
       margin: 4px 0 0 0;

@@ -14,4 +14,5 @@
 //= require jquery_ujs
 //= require jquery.ui.all
 //= require jquery.nested-fields
+//= require select2
 //= require_tree .

@@ -28,7 +28,7 @@ ul.tabs {
 
       &:hover { background-color: #eee; }
       &.active {
-        background: #ffffff url("/assets/tab-bg.png") repeat-x top;
+        background: #ffffff image-url("tab-bg.png") repeat-x top;
         background-color: #ffffff;
         border-top: 0;
         border-bottom: 1px solid #D9E1E5;
